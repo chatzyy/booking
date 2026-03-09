@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>การจองของฉัน</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.boxicons.com/3.0.8/fonts/basic/boxicons.min.css" rel="stylesheet">
+     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;700&display=swap');
+        body { font-family: 'Kanit', sans-serif; }
+    </style>
+</head>
+<body>
+    <div class="bg-gray-50 fixed w-full">
+        <div class="flex shadow p-2 justify-between h-20">
+            <div class="flex gap-1">
+                <h1 class="flex justify-center items-center ml-7">
+                    <img src="/img/Gemini_Generated_Image_hs4eeths4eeths4e-removebg-preview.png" alt="" class="w-20 m-0 ">
+                </h1>
+                <div>
+                    <h1 class=" text-2xl font-bold">
+                        ระบบจองห้องสมุด
+                    </h1>
+                    <h1>
+                        มหาวิทยาลัยพะเยา
+                    </h1>
+                </div>
+            </div>
+        <div class="flex justify-center h-full ">
+            <a href="../index/home_page_admin.html" class="flex bg- text-black pl-6 pr-6 m-2 items-center rounded-xl hover:bg-gray-200"><i class="bx bx-home mr-2 text-xl"></i>ห้องทั้งหมด</a>
+            <a href="../index/history/history_room.html" class="flex bg-black text-white pl-6 pr-6 m-2 items-center rounded-xl "><i class="bx bx-calendar mr-1 text-xl"></i>การจองของฉัน</a>
+            <a href="../dashbord/dashbord.html" class="flex bg- text-black pl-6 pr-6 m-2 items-center rounded-xl hover:bg-gray-200"><i class="bx bx-bar-chart-big mr-2 text-xl" style="color:#000000;"></i>dashbord</a>
+            <a href="../edit/edit.html" class="flex bg- text-black pl-6 pr-6 m-2 items-center rounded-xl  hover:bg-gray-200"><i class="bx bx-edit-alt mr-2 text-xl" style="color:#000000"></i>แก้ไขห้อง</a>
+        </div>
+          <div class="flex justify-center items-center m-4">
+                <a href="../profile/profile_admin.html" class="flex border rounded-xl hover:bg-gray-200">
+                    <span id="display-admin-name" class="flex items-center mr-3 font-medium">
+                        <i class="bx bx-user m-1 text-xl p-1"></i>Admin
+                    </span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class=" pt-36 pl-12">
+        <h1 class=" text-3xl font-bold">การจองของฉัน</h1>
+        <h1 class="pt-2">ตรวจสอบและจัดการการจองห้องของคุณ</h1>
+    </div>
+
+    <div class="flex items-center bg-gray-200 mt-10 ml-12 mr-6 p-1 rounded-2xl gap-2 h-10">
+        <a href="#" class="flex items-center justify-center bg-white w-full rounded-xl h-8 ml-1 font-bold">กำลังจอง</a>
+        <a href="../history/history_room_admin2.html" class="flex items-center justify-center w-full rounded-xl h-8">ประวัติ</a>
+        <a href="../history/history_room_admin3.html" class="flex items-center justify-center w-full rounded-xl h-8 mr-1">ยกเลิก</a>
+    </div>
+
+    <div id="booking-container" class="flex justify-center border-2 ml-12 mr-6 mt-3 rounded-xl h-12rem bg-white">
+        <div id="empty-state" class="flex flex-col items-center justify-center mt-10">
+            <i class="bx bx-calendar-detail text-6xl text-gray-300"></i>
+            <h1 class="text-gray-500 m-2 font-medium">ไม่มีการจอง</h1>
+        </div>
+    </div>
+
+   <script>
+document.addEventListener('DOMContentLoaded', () => {
+    const container = document.getElementById('booking-container');
+    const emptyState = document.getElementById('empty-state');
+    
+    // 1. สร้างข้อมูลจำลอง (ถ้ายังไม่มีในระบบ) เพื่อให้มีปุ่มกดเทสได้
+    if (!localStorage.getItem('myBookings')) {
+        const dummyBookings = [
+            { id: 'B001', roomName: 'ห้องอ่านหนังสือ', roomId: 'CE08401', date: '10 มี.ค. 2026', time: '09:00 - 11:00', status: 'active' },
+            { id: 'B002', roomName: 'ห้องประชุม', roomId: 'CE08413', date: '10 มี.ค. 2026', time: '13:00 - 15:00', status: 'active' }
+        ];
+        localStorage.setItem('myBookings', JSON.stringify(dummyBookings));
+    }
+
+    // 2. ฟังก์ชันโหลดข้อมูลมาแสดง
+    function loadActiveBookings() {
+        const bookings = JSON.parse(localStorage.getItem('myBookings')) || [];
+        const activeBookings = bookings.filter(b => b.status === 'active');
+
+        // เคลียร์การ์ดเก่าออกก่อน (แต่เก็บ emptyState ไว้)
+        container.innerHTML = '';
+        container.appendChild(emptyState);
+
+        if (activeBookings.length === 0) {
+            emptyState.style.display = 'flex'; // โชว์ "ไม่มีการจอง"
+            container.className = "flex justify-center border-2 ml-12 mr-6 mt-3 rounded-xl h-64 bg-white";
+        } else {
+            emptyState.style.display = 'none'; // ซ่อน "ไม่มีการจอง"
+            // เปลี่ยน Layout ให้จัดเรียงการ์ดได้สวยๆ
+            container.className = "flex flex-wrap gap-6 border-2 ml-12 mr-6 mt-3 rounded-xl p-6 bg-white";
+
+            // สร้างการ์ดห้องที่กำลังจอง
+            activeBookings.forEach(booking => {
+                const card = document.createElement('div');
+                card.className = "border rounded-xl p-5 shadow-lg bg-gray-50 w-80 relative";
+                card.innerHTML = `
+                    <div class="absolute top-0 right-0 bg-blue-500 text-white px-3 py-1 rounded-bl-xl rounded-tr-xl text-xs font-bold">กำลังใช้งาน</div>
+                    <h1 class="text-xl font-bold text-purple-900">${booking.roomName}</h1>
+                    <h1 class="text-gray-600 font-medium">หมายเลข: ${booking.roomId}</h1>
+                    <div class="mt-3 bg-white p-3 rounded-lg border">
+                        <p class="text-sm text-gray-500"><i class="bx bx-calendar mr-1"></i> ${booking.date}</p>
+                        <p class="text-sm text-gray-500 mt-1"><i class="bx bx-time mr-1"></i> ${booking.time}</p>
+                    </div>
+                    <button onclick="completeBooking('${booking.id}')" class="mt-4 bg-green-500 text-white w-full py-2 rounded-lg hover:bg-green-600 transition font-bold shadow-md">
+                        <i class="bx bx-check-circle mr-1"></i> ใช้งานเสร็จสิ้น
+                    </button>
+                `;
+                container.appendChild(card);
+            });
+        }
+    }
+
+    // 3. ฟังก์ชันเมื่อกดปุ่ม "ใช้งานเสร็จสิ้น"
+    window.completeBooking = function(bookingId) {
+        let bookings = JSON.parse(localStorage.getItem('myBookings')) || [];
+        
+        // หาตำแหน่งของการจองที่กด แล้วเปลี่ยนสถานะเป็น completed
+        bookings = bookings.map(b => {
+            if (b.id === bookingId) {
+                b.status = 'completed';
+            }
+            return b;
+        });
+
+        // เซฟทับลงไปใหม่ แล้วโหลดหน้าจอใหม่
+        localStorage.setItem('myBookings', JSON.stringify(bookings));
+        loadActiveBookings();
+    };
+
+    // เรียกทำงานครั้งแรก
+    loadActiveBookings();
+});
+</script>
+    <script src="/javascript/javascript.js"></script>
+</body>
+</html>

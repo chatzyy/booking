@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ระบบจองห้องอ่านหนังสือ</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* กำหนดฟอนต์เริ่มต้น */
+        body { font-family: 'Prompt', sans-serif; }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-[#f0f4fd] to-[#fdfdff] min-h-screen flex justify-center items-center text-slate-800 p-4">
+
+    <div class="w-full max-w-md p-5">
+        
+        <div class="text-center mb-8">
+            <img src="../img/Gemini_Generated_Image_hs4eeths4eeths4e-removebg-preview.png" alt="โลโก้ระบบจองห้องอ่านหนังสือ" class="w-32 h-32 mx-auto mb-4 object-contain">
+            
+            <h1 class="text-2xl font-medium text-slate-800 mb-1">ระบบจองห้องอ่านหนังสือ</h1>
+            <p class="text-sm text-slate-500">มหาวิทยาลัยพะเยา</p>
+        </div>
+
+        <div class="bg-slate-100 rounded-full flex p-1.5 mb-6 shadow-inner">
+            <button id="tab-student" onclick="switchTab('student')" class="flex-1 py-2.5 text-center text-sm font-medium rounded-full transition-all duration-300 bg-white text-slate-900 shadow cursor-pointer">เข้าสู่ระบบนักศึกษา</button>
+            <button id="tab-admin" onclick="switchTab('admin')" class="flex-1 py-2.5 text-center text-sm font-medium rounded-full transition-all duration-300 text-slate-500 hover:text-slate-700 cursor-pointer">เข้าสู่ระบบแอดมิน</button>
+        </div>
+
+        <div class="bg-white rounded-2xl p-8 shadow-[0_4px_20px_rgba(0,0,0,0.03)] border border-slate-200">
+            
+            <div class="mb-6">
+                <h2 id="form-title-text" class="text-lg font-medium text-slate-900">เข้าสู่ระบบสมาชิก</h2>
+                <p id="form-subtitle-text" class="text-sm text-slate-500 mt-1">สำหรับนักศึกษา บุคลากรภายใน</p>
+            </div>
+
+            <form id="loginForm">
+                <div class="mb-5">
+                    <label for="email" class="block text-sm font-medium mb-2 text-slate-900">อีเมล</label>
+                    <div class="relative">
+                        <i class="fa-regular fa-envelope absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                        <input type="email" id="email" placeholder="student@up.ac.th" required 
+                            class="w-full py-3 pr-4 pl-10 border border-slate-200 rounded-xl text-sm bg-slate-50 text-slate-700 transition-colors focus:border-blue-600 focus:bg-white focus:outline-none focus:ring-1 focus:ring-blue-600">
+                    </div>
+                </div>
+
+                <div class="mb-5">
+                    <label for="password" class="block text-sm font-medium mb-2 text-slate-900">รหัสผ่าน</label>
+                    <div class="relative">
+                        <i class="fa-solid fa-lock absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                        <input type="password" id="password" placeholder="••••••••" required 
+                            class="w-full py-3 pr-4 pl-10 border border-slate-200 rounded-xl text-sm bg-slate-50 text-slate-700 transition-colors focus:border-blue-600 focus:bg-white focus:outline-none focus:ring-1 focus:ring-blue-600">
+                    </div>
+                </div>
+
+                <button type="submit" class="w-full py-3.5 bg-[#0a0f1c] text-white rounded-xl text-[15px] font-medium transition-colors hover:bg-slate-800 mt-2 cursor-pointer">เข้าสู่ระบบ</button>
+            </form>
+
+            <div id="info-box-content" class="bg-blue-50/50 border border-blue-100 rounded-xl p-4 mt-6">
+                <p class="text-[13px] font-semibold text-slate-900 mb-1.5">เงื่อนไขการใช้งาน:</p>
+                <ul class="list-none pl-0 space-y-1">
+                    <li class="text-[13px] text-slate-600">• ต้องใช้อีเมล <b class="font-medium text-slate-800">@up.ac.th</b> เท่านั้น</li>
+                    <li class="text-[13px] text-slate-600">• รหัสผ่านต้องมีความยาว 6 ตัวอักษรขึ้นไป</li>
+                </ul>
+            </div>
+            
+        </div>
+    </div>
+
+<script>
+    let currentRole = 'student';
+
+    function switchTab(role) {
+        currentRole = role; 
+
+        const tabStudent = document.getElementById('tab-student');
+        const tabAdmin = document.getElementById('tab-admin');
+        const titleText = document.getElementById('form-title-text');
+        const subtitleText = document.getElementById('form-subtitle-text');
+        const emailInput = document.getElementById('email');
+        const infoBox = document.getElementById('info-box-content');
+
+        const activeClass = "flex-1 py-2.5 text-center text-sm font-medium rounded-full transition-all duration-300 bg-white text-slate-900 shadow cursor-pointer";
+        const inactiveClass = "flex-1 py-2.5 text-center text-sm font-medium rounded-full transition-all duration-300 text-slate-500 hover:text-slate-700 cursor-pointer";
+
+        if (role === 'student') {
+            tabStudent.className = activeClass;
+            tabAdmin.className = inactiveClass;
+            
+            titleText.innerText = 'เข้าสู่ระบบสมาชิก';
+            subtitleText.innerText = 'สำหรับนักศึกษา บุคลากรภายใน';
+            emailInput.placeholder = 'student@up.ac.th';
+            
+            infoBox.innerHTML = `
+                <p class="text-[13px] font-semibold text-slate-900 mb-1.5">เงื่อนไขการใช้งาน:</p>
+                <ul class="list-none pl-0 space-y-1">
+                    <li class="text-[13px] text-slate-600">• ต้องใช้อีเมล <b class="font-medium text-slate-800">@up.ac.th</b> เท่านั้น</li>
+                    <li class="text-[13px] text-slate-600">• รหัสผ่านต้องมีความยาว 6 ตัวอักษรขึ้นไป</li>
+                </ul>
+            `;
+        } else if (role === 'admin') {
+            tabAdmin.className = activeClass;
+            tabStudent.className = inactiveClass;
+    
+            titleText.innerText = 'เข้าสู่ระบบเเอดมิน';
+            subtitleText.innerText = 'สำหรับเจ้าหน้าที่ห้องสมุด';
+            emailInput.placeholder = 'staff@up.ac.th';
+
+            infoBox.innerHTML = `
+                <p class="text-[13px] font-semibold text-slate-900 mb-1.5">เงื่อนไขการใช้งาน (ผู้ดูแลระบบ):</p>
+                <ul class="list-none pl-0 space-y-1">
+                    <li class="text-[13px] text-slate-600">• ต้องใช้อีเมล <b class="font-medium text-slate-800">@up.ac.th</b> เท่านั้น</li>
+                    <li class="text-[13px] text-slate-600">• รหัสผ่านต้องมีความยาว 6 ตัวอักษรขึ้นไป</li>
+                </ul>
+            `;
+        }
+    }
+
+    document.getElementById('loginForm').addEventListener('submit', function(event) {
+        event.preventDefault(); 
+
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value.trim();
+
+        if (!email.endsWith('@up.ac.th')) {
+            alert('❌ เข้าสู่ระบบล้มเหลว!\nกรุณาใช้อีเมลของมหาวิทยาลัยพะเยา (@up.ac.th) เท่านั้น');
+            return; 
+        }
+
+        if (password.length < 6) {
+            alert('❌ เข้าสู่ระบบล้มเหลว!\nรหัสผ่านต้องมีความยาวอย่างน้อย 6 ตัวอักษร');
+            return; 
+        }
+
+        let name = email.split('@')[0];
+        name = name.charAt(0).toUpperCase() + name.slice(1);
+
+        localStorage.setItem('loggedInEmail', email);
+        localStorage.setItem('loggedInName', name);
+
+        // หมายเหตุ: ปรับเปลี่ยนเส้นทางไฟล์ (Path) ตามโครงสร้างโฟลเดอร์จริงของคุณ
+        if (currentRole === 'student') {
+            window.location.href = '../useser/index/home_page.html';
+        } else if (currentRole === 'admin') {
+            window.location.href = '../admin/index/home_page_admin.html';
+        }
+    });
+</script>
+</body>
+</html>

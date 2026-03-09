@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>แดชบอร์ดเจ้าหน้าที่ - ระบบจองห้องสมุด</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.boxicons.com/3.0.8/fonts/basic/boxicons.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;700&display=swap');
+        body { 
+            font-family: 'Kanit', sans-serif; 
+            background-color: #f9fafb; 
+        }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <div class="bg-gray-50 fixed w-full z-50 top-0">
+        <div class="flex shadow p-2 justify-between h-20">
+            <div class="flex gap-1">
+                <h1 class="flex justify-center items-center ml-7">
+                    <img src="../../img/Gemini_Generated_Image_hs4eeths4eeths4e-removebg-preview.png" alt="" class="w-20 m-0 ">
+                </h1>
+                <div>
+                    <h1 class="text-2xl font-bold">
+                        ระบบจองห้องสมุด
+                    </h1>
+                    <h1>
+                        มหาวิทยาลัยพะเยา
+                    </h1>
+                </div>
+            </div>
+            <div class="flex justify-center h-full ">
+                <a href="../index/home_page_admin.html" class="flex text-black pl-6 pr-6 m-2 items-center rounded-xl hover:bg-gray-200"><i class="bx bx-home mr-2 text-xl"></i>ห้องทั้งหมด</a>
+                <a href="../history/history_room_admin.html" class="flex text-black pl-6 pr-6 m-2 items-center rounded-xl hover:bg-gray-200"><i class="bx bx-calendar mr-1 text-xl"></i>การจองของฉัน</a>
+                <a href="../dashbord/dashbord.html" class="flex bg-black text-white pl-6 pr-6 m-2 items-center rounded-xl"><i class="bx bx-bar-chart-big mr-2 text-xl"></i>dashbord</a>
+                <a href="../edit/edit.html" class="flex text-black pl-6 pr-6 m-2 items-center rounded-xl hover:bg-gray-200"><i class="bx bx-edit-alt mr-2 text-xl"></i>แก้ไขห้อง</a>
+            </div>
+            <div class="flex justify-center items-center m-4">
+                <a href="../profile/profile_admin.html" class="flex border rounded-xl hover:bg-gray-200">
+                    <span id="display-admin-name" class="flex items-center mr-3 font-medium">
+                        <i class="bx bx-user m-1 text-xl p-1"></i>Admin
+                    </span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <main class="pt-32 px-12 max-w-[1600px] mx-auto pb-20">
+        
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold flex items-center gap-3">
+                <i class='bx bx-grid-alt'></i> แดชบอร์ดเจ้าหน้าที่
+            </h1>
+            <h1 class="pt-2 text-gray-600">
+                ภาพรวมการจองและการใช้งานห้องอ่านหนังสือ
+            </h1>
+        </div>
+
+        <div id="pending-alert" class="hidden bg-yellow-50 border border-yellow-200 rounded-xl p-4 flex gap-3 items-center mb-8 shadow-sm">
+            <i class='bx bx-time-five text-yellow-600 text-2xl'></i>
+            <div>
+                <h3 class="font-bold text-yellow-800 text-lg">มีการจองที่รอการยืนยัน <span id="pending-count">0</span> รายการ</h3>
+                <p class="text-yellow-600">กรุณาตรวจสอบและยืนยันการจองในแท็บ "รายการจอง"</p>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-4 gap-6 mb-10">
+            <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm relative hover:shadow-md transition">
+                <div class="flex justify-between items-start mb-2">
+                    <h3 class="text-gray-600 text-lg font-bold">ห้องทั้งหมด</h3><i class='bx bx-map-alt text-blue-500 text-2xl'></i>
+                </div>
+                <h1 id="stat-total-rooms" class="text-4xl font-bold mb-1 mt-2">0</h1>
+                <p class="text-gray-500"><span id="stat-free-rooms">0</span> ห้องว่างตอนนี้</p>
+            </div>
+            <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm relative hover:shadow-md transition">
+                <div class="flex justify-between items-start mb-2">
+                    <h3 class="text-gray-600 text-lg font-bold">การจองวันนี้</h3><i class='bx bx-calendar text-green-500 text-2xl'></i>
+                </div>
+                <h1 id="stat-today-bookings" class="text-4xl font-bold mb-1 mt-2">0</h1>
+                <p id="stat-today-date" class="text-gray-500">-</p>
+            </div>
+            <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm relative hover:shadow-md transition">
+                <div class="flex justify-between items-start mb-2">
+                    <h3 class="text-gray-600 text-lg font-bold">การจองทั้งหมด</h3><i class='bx bx-check-circle text-purple-500 text-2xl'></i>
+                </div>
+                <h1 id="stat-total-bookings" class="text-4xl font-bold mb-1 mt-2">0</h1>
+                <p class="text-gray-500">รายการในระบบ</p>
+            </div>
+            <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm relative hover:shadow-md transition">
+                <div class="flex justify-between items-start mb-2">
+                    <h3 class="text-gray-600 text-lg font-bold">อัตราการใช้งาน</h3><i class='bx bx-line-chart text-orange-500 text-2xl'></i>
+                </div>
+                <h1 id="stat-utilization" class="text-4xl font-bold mb-1 mt-2">0%</h1>
+                <p class="text-gray-500">ของห้องทั้งหมดวันนี้</p>
+            </div>
+        </div>
+
+        <div class="bg-gray-100 p-1.5 rounded-xl inline-flex mb-8 gap-2 border border-gray-200">
+            <button onclick="switchTab('bookings', this)" class="tab-btn active bg-white shadow rounded-lg px-8 py-2.5 text-lg font-bold transition text-black">รายการจอง</button>
+            <button onclick="switchTab('rooms', this)" class="tab-btn text-gray-500 hover:text-black rounded-lg px-8 py-2.5 text-lg font-bold transition">สถานะห้อง</button>
+            <button onclick="switchTab('stats', this)" class="tab-btn text-gray-500 hover:text-black rounded-lg px-8 py-2.5 text-lg font-bold transition">สถิติ</button>
+        </div>
+
+        <div id="tab-bookings" class="tab-content active">
+            <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+                <div class="p-6 border-b border-gray-100 flex justify-between items-center bg-white">
+                    <div>
+                        <h2 class="font-bold text-2xl">รายการจองทั้งหมด</h2>
+                        <p class="text-gray-500 mt-1">จัดการและตรวจสอบการจองห้อง</p>
+                    </div>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-base text-left text-gray-700">
+                        <thead class="text-gray-800 bg-gray-50 border-b border-gray-200">
+                            <tr>
+                                <th class="px-8 py-5 font-bold">วันที่ / เวลา</th>
+                                <th class="px-8 py-5 font-bold">ห้อง</th>
+                                <th class="px-8 py-5 font-bold">ผู้จอง</th>
+                                <th class="px-8 py-5 font-bold">วัตถุประสงค์</th>
+                                <th class="px-8 py-5 font-bold">สถานะ</th>
+                                <th class="px-8 py-5 font-bold text-right">จัดการ</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bookings-table-body">
+                            </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div id="tab-rooms" class="tab-content">
+            <div id="rooms-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 pr-12">
+                </div>
+        </div>
+
+        <div id="tab-stats" class="tab-content">
+            <div class="grid grid-cols-2 gap-8 mb-8 pr-12">
+                <div class="bg-white p-8 rounded-2xl border border-gray-200 shadow-sm">
+                    <h3 class="font-bold text-2xl mb-8">สรุปการจองตามประเภทห้อง</h3>
+                    <div class="mb-6">
+                        <div class="flex justify-between mb-3">
+                            <span class="text-lg font-bold text-gray-700">ห้องส่วนตัว (เดี่ยว)</span>
+                            <span id="stat-single-count" class="text-lg font-bold">0 การจอง</span>
+                        </div>
+                        <div class="w-full bg-gray-100 rounded-full h-3">
+                            <div id="stat-single-bar" class="bg-blue-600 h-3 rounded-full" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between mb-3">
+                            <span class="text-lg font-bold text-gray-700">ห้องกลุ่ม (ประชุม)</span>
+                            <span id="stat-group-count" class="text-lg font-bold">0 การจอง</span>
+                        </div>
+                        <div class="w-full bg-gray-100 rounded-full h-3">
+                            <div id="stat-group-bar" class="bg-blue-600 h-3 rounded-full" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-8 rounded-2xl border border-gray-200 shadow-sm">
+                    <h3 class="font-bold text-2xl mb-8">การจองตามชั้น</h3>
+                    <div id="floor-stats-container" class="space-y-4">
+                        </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden p-8 mr-12 mb-10">
+                <h3 class="font-bold text-2xl mb-2">ห้องยอดนิยม</h3>
+                <p class="text-gray-500 mb-8 text-lg">ห้องที่ถูกจองบ่อยที่สุด</p>
+                <table class="w-full text-lg text-left">
+                    <thead class="text-gray-800 border-b border-gray-200">
+                        <tr>
+                            <th class="pb-4 font-bold w-24">อันดับ</th>
+                            <th class="pb-4 font-bold">ห้อง</th>
+                            <th class="pb-4 font-bold text-right">จำนวนการจอง</th>
+                        </tr>
+                    </thead>
+                    <tbody id="popular-rooms-body">
+                        </tbody>
+                </table>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        // ==========================================
+        // 1. ระบบจำลองฐานข้อมูล (LocalStorage) + อัปเดต 24 ห้อง
+        // ==========================================
+        const initialRooms = [
+            // ชั้น 4 - ห้องอ่านหนังสือ (ห้องเดี่ยว) 12 ห้อง
+            { id: 'CE08401', name: 'ห้องอ่านหนังสือ', type: 'ห้องเดี่ยว', floor: '4', capacity: 1, maintenance: false },
+            { id: 'CE08402', name: 'ห้องอ่านหนังสือ', type: 'ห้องเดี่ยว', floor: '4', capacity: 1, maintenance: false },
+            { id: 'CE08403', name: 'ห้องอ่านหนังสือ', type: 'ห้องเดี่ยว', floor: '4', capacity: 1, maintenance: false },
+            { id: 'CE08404', name: 'ห้องอ่านหนังสือ', type: 'ห้องเดี่ยว', floor: '4', capacity: 1, maintenance: false },
+            { id: 'CE08405', name: 'ห้องอ่านหนังสือ', type: 'ห้องเดี่ยว', floor: '4', capacity: 1, maintenance: false },
+            { id: 'CE08406', name: 'ห้องอ่านหนังสือ', type: 'ห้องเดี่ยว', floor: '4', capacity: 1, maintenance: false },
+            { id: 'CE08407', name: 'ห้องอ่านหนังสือ', type: 'ห้องเดี่ยว', floor: '4', capacity: 1, maintenance: false },
+            { id: 'CE08408', name: 'ห้องอ่านหนังสือ', type: 'ห้องเดี่ยว', floor: '4', capacity: 1, maintenance: false },
+            { id: 'CE08409', name: 'ห้องอ่านหนังสือ', type: 'ห้องเดี่ยว', floor: '4', capacity: 1, maintenance: false },
+            { id: 'CE08410', name: 'ห้องอ่านหนังสือ', type: 'ห้องเดี่ยว', floor: '4', capacity: 1, maintenance: false },
+            { id: 'CE08411', name: 'ห้องอ่านหนังสือ', type: 'ห้องเดี่ยว', floor: '4', capacity: 1, maintenance: false },
+            { id: 'CE08412', name: 'ห้องอ่านหนังสือ', type: 'ห้องเดี่ยว', floor: '4', capacity: 1, maintenance: false },
+
+            // ชั้น 4 - ห้องประชุม (ห้องกลุ่ม) 4 ห้อง
+            { id: 'CE08413', name: 'ห้องประชุม', type: 'ห้องกลุ่ม', floor: '4', capacity: 10, maintenance: false },
+            { id: 'CE08414', name: 'ห้องประชุม', type: 'ห้องกลุ่ม', floor: '4', capacity: 10, maintenance: false },
+            { id: 'CE08415', name: 'ห้องประชุม', type: 'ห้องกลุ่ม', floor: '4', capacity: 10, maintenance: false },
+            { id: 'CE08416', name: 'ห้องประชุม', type: 'ห้องกลุ่ม', floor: '4', capacity: 10, maintenance: false },
+
+            // ชั้น 3 - ห้องประชุม (ห้องกลุ่ม) 7 ห้อง
+            { id: 'CE08310', name: 'ห้องประชุม', type: 'ห้องกลุ่ม', floor: '3', capacity: 10, maintenance: false },
+            { id: 'CE08311', name: 'ห้องประชุม', type: 'ห้องกลุ่ม', floor: '3', capacity: 10, maintenance: false },
+            { id: 'CE08312', name: 'ห้องประชุม', type: 'ห้องกลุ่ม', floor: '3', capacity: 10, maintenance: false },
+            { id: 'CE08313', name: 'ห้องประชุม', type: 'ห้องกลุ่ม', floor: '3', capacity: 10, maintenance: false },
+            { id: 'CE08314', name: 'ห้องประชุม', type: 'ห้องกลุ่ม', floor: '3', capacity: 10, maintenance: false },
+            { id: 'CE08315', name: 'ห้องประชุม', type: 'ห้องกลุ่ม', floor: '3', capacity: 10, maintenance: false },
+            { id: 'CE08316', name: 'ห้องประชุม', type: 'ห้องกลุ่ม', floor: '3', capacity: 10, maintenance: false },
+
+            // ชั้น G - ห้องคาราโอเกะ (ห้องกลุ่ม) 1 ห้อง
+            { id: 'CE08317', name: 'ห้องคาราโอเกะ', type: 'ห้องกลุ่ม', floor: 'G', capacity: 5, maintenance: false } 
+        ];
+
+        function initData() {
+            const storedRooms = JSON.parse(localStorage.getItem('libra_rooms') || '[]');
+            // ถ้าระบบยังไม่มีห้อง หรือมีไม่ครบ 24 ห้อง ให้โหลดค่า default ลงไปใหม่
+            if (storedRooms.length !== 24) {
+                localStorage.setItem('libra_rooms', JSON.stringify(initialRooms));
+            }
+        }
+
+        function getTodayDate() {
+            const d = new Date();
+            return d.toISOString().split('T')[0]; 
+        }
+
+        // ==========================================
+        // 2. ฟังก์ชันโหลดและอัปเดตหน้าจอหลัก 
+        // ==========================================
+        function loadDashboard() {
+            const rooms = JSON.parse(localStorage.getItem('libra_rooms') || '[]');
+            const bookings = JSON.parse(localStorage.getItem('libra_bookings') || '[]');
+
+            updateSummary(rooms, bookings);
+            renderBookings(bookings);
+            renderRoomStatus(rooms, bookings);
+            renderStats(rooms, bookings);
+        }
+
+        // อัปเดตสถิติด้านบน
+        function updateSummary(rooms, bookings) {
+            const today = getTodayDate();
+            const todayBookings = bookings.filter(b => b.date === today);
+            const pendingBookings = bookings.filter(b => b.status === 'pending');
+            const alertBox = document.getElementById('pending-alert');
+            const pendingCount = document.getElementById('pending-count');
+            
+            if (pendingBookings.length > 0) {
+                alertBox.classList.remove('hidden');
+                pendingCount.innerText = pendingBookings.length;
+            } else {
+                alertBox.classList.add('hidden');
+            }
+
+            let freeRoomsCount = 0;
+            const currentTime = new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+
+            rooms.forEach(room => {
+                if(room.maintenance) return; 
+                const isOccupiedNow = todayBookings.some(b => 
+                    b.roomId === room.id && 
+                    b.status === 'confirmed' && 
+                    currentTime >= b.timeIn && currentTime < b.timeOut
+                );
+                if (!isOccupiedNow) freeRoomsCount++;
+            });
+
+            const uniqueRoomsBookedToday = new Set(todayBookings.filter(b => b.status === 'confirmed').map(b => b.roomId)).size;
+            const utilRate = rooms.length > 0 ? Math.round((uniqueRoomsBookedToday / rooms.length) * 100) : 0;
+
+            document.getElementById('stat-total-rooms').innerText = rooms.length;
+            document.getElementById('stat-free-rooms').innerText = freeRoomsCount;
+            document.getElementById('stat-today-bookings').innerText = todayBookings.length;
+            document.getElementById('stat-today-date').innerText = new Date().toLocaleDateString('th-TH');
+            document.getElementById('stat-total-bookings').innerText = bookings.length;
+            document.getElementById('stat-utilization').innerText = utilRate + '%';
+        }
+
+        // ==========================================
+        // 3. แท็บ: รายการจอง (ตารางจัดการ)
+        // ==========================================
+        function renderBookings(bookings) {
+            const tbody = document.getElementById('bookings-table-body');
+            tbody.innerHTML = '';
+
+            bookings.sort((a, b) => b.timestamp - a.timestamp).forEach(b => {
+                
+                let statusBadge = '';
+                let actionBtns = '';
+
+                if (b.status === 'pending') {
+                    statusBadge = `<span class="bg-yellow-100 text-yellow-800 px-4 py-1.5 rounded-full text-sm font-bold">รอตรวจสอบ</span>`;
+                    actionBtns = `
+                        <button onclick="updateStatus(${b.id}, 'confirmed')" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm transition mr-2">ยืนยัน</button>
+                        <button onclick="updateStatus(${b.id}, 'cancelled')" class="bg-red-100 hover:bg-red-200 text-red-700 px-4 py-2 rounded-lg text-sm transition">ยกเลิก</button>
+                    `;
+                } else if (b.status === 'confirmed') {
+                    statusBadge = `<span class="bg-green-100 text-green-800 px-4 py-1.5 rounded-full text-sm font-bold">ยืนยันแล้ว</span>`;
+                    actionBtns = `<button onclick="updateStatus(${b.id}, 'cancelled')" class="bg-red-100 hover:bg-red-200 text-red-700 px-4 py-2 rounded-lg text-sm transition">ยกเลิก</button>`;
+                } else {
+                    statusBadge = `<span class="bg-gray-100 text-gray-500 px-4 py-1.5 rounded-full text-sm font-bold">ถูกยกเลิก</span>`;
+                    actionBtns = `-`;
+                }
+
+                const tr = document.createElement('tr');
+                tr.className = 'border-b border-gray-100 hover:bg-gray-50 transition';
+                tr.innerHTML = `
+                    <td class="px-8 py-5">
+                        <div class="font-bold text-lg">${b.dateText || b.date}</div>
+                        <div class="text-gray-500">${b.timeIn} - ${b.timeOut} น.</div>
+                    </td>
+                    <td class="px-8 py-5 font-bold text-purple-800 text-lg">${b.roomName} <br><span class="text-sm text-gray-500 font-normal">(${b.roomId})</span></td>
+                    <td class="px-8 py-5 font-medium text-lg">${b.user}</td>
+                    <td class="px-8 py-5 text-gray-600">${b.purpose || '-'}</td>
+                    <td class="px-8 py-5">${statusBadge}</td>
+                    <td class="px-8 py-5 text-right">${actionBtns}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            if(bookings.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="px-8 py-16 text-center text-gray-400 text-lg">ไม่มีรายการจองในระบบ</td></tr>`;
+            }
+        }
+
+        function updateStatus(bookingId, newStatus) {
+            let bookings = JSON.parse(localStorage.getItem('libra_bookings') || '[]');
+            const index = bookings.findIndex(b => b.id === bookingId);
+            if (index !== -1) {
+                bookings[index].status = newStatus;
+                localStorage.setItem('libra_bookings', JSON.stringify(bookings));
+                loadDashboard(); 
+            }
+        }
+
+        // ==========================================
+        // 4. แท็บ: สถานะห้อง
+        // ==========================================
+        function renderRoomStatus(rooms, bookings) {
+            const grid = document.getElementById('rooms-grid');
+            grid.innerHTML = '';
+            
+            const today = getTodayDate();
+            const currentTime = new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+
+            rooms.forEach(room => {
+                const todayBookingsForRoom = bookings.filter(b => b.roomId === room.id && b.date === today && b.status === 'confirmed');
+                
+                let statusInfo = { text: 'ว่าง', color: 'green', icon: 'bx-check-circle', bg: 'bg-green-100', textCol: 'text-green-800' };
+                
+                if (room.maintenance) {
+                    statusInfo = { text: 'ปิดปรับปรุง', color: 'gray', icon: 'bx-wrench', bg: 'bg-gray-200', textCol: 'text-gray-700' };
+                } else {
+                    const isOccupiedNow = todayBookingsForRoom.some(b => currentTime >= b.timeIn && currentTime < b.timeOut);
+                    if (isOccupiedNow) {
+                        statusInfo = { text: 'ไม่ว่าง', color: 'red', icon: 'bx-x-circle', bg: 'bg-red-100', textCol: 'text-red-800' };
+                    }
+                }
+
+                grid.innerHTML += `
+                    <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm hover:shadow-lg transition">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h3 class="font-bold text-black text-xl">${room.name}</h3>
+                                <p class="text-sm text-gray-500 mt-1">หมายเลข ${room.id} • ชั้น ${room.floor}</p>
+                            </div>
+                            <span class="${statusInfo.bg} ${statusInfo.textCol} text-sm px-3 py-1.5 rounded-xl border border-${statusInfo.color}-300 flex items-center gap-1 font-bold">
+                                <i class='bx ${statusInfo.icon} text-lg'></i> ${statusInfo.text}
+                            </span>
+                        </div>
+                        <div class="text-sm text-gray-600 space-y-2 mt-6">
+                            <p class="flex items-center gap-2"><i class='bx bx-group text-gray-400 text-lg'></i> ความจุ: ${room.capacity} ที่นั่ง</p>
+                            <p class="flex items-center gap-2"><i class='bx bx-calendar text-gray-400 text-lg'></i> การจองวันนี้: <span class="font-bold text-black">${todayBookingsForRoom.length}</span> ครั้ง</p>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // ==========================================
+        // 5. แท็บ: สถิติ
+        // ==========================================
+        function renderStats(rooms, bookings) {
+            const confirmedBookings = bookings.filter(b => b.status === 'confirmed');
+            
+            let singleCount = 0, groupCount = 0;
+            confirmedBookings.forEach(b => {
+                const room = rooms.find(r => r.id === b.roomId);
+                if(room) {
+                    if(room.type === 'ห้องเดี่ยว') singleCount++;
+                    else groupCount++;
+                }
+            });
+            const totalType = singleCount + groupCount || 1; 
+            
+            document.getElementById('stat-single-count').innerText = `${singleCount} การจอง`;
+            document.getElementById('stat-single-bar').style.width = `${(singleCount/totalType)*100}%`;
+            document.getElementById('stat-group-count').innerText = `${groupCount} การจอง`;
+            document.getElementById('stat-group-bar').style.width = `${(groupCount/totalType)*100}%`;
+
+            const floorCounts = {};
+            rooms.forEach(r => floorCounts[r.floor] = 0); 
+            confirmedBookings.forEach(b => {
+                const room = rooms.find(r => r.id === b.roomId);
+                if(room) floorCounts[room.floor]++;
+            });
+
+            const floorContainer = document.getElementById('floor-stats-container');
+            floorContainer.innerHTML = '';
+            const totalFloorBookings = confirmedBookings.length || 1;
+
+            Object.keys(floorCounts).sort().forEach(floor => {
+                const count = floorCounts[floor];
+                const pct = (count / totalFloorBookings) * 100;
+                floorContainer.innerHTML += `
+                    <div>
+                        <div class="flex justify-between mb-2">
+                            <span class="text-lg text-gray-700">ชั้น ${floor}</span>
+                            <span class="text-lg font-bold">${count} การจอง</span>
+                        </div>
+                        <div class="w-full bg-gray-100 rounded-full h-3">
+                            <div class="bg-purple-600 h-3 rounded-full" style="width: ${pct}%"></div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            const roomBookCounts = {};
+            confirmedBookings.forEach(b => {
+                roomBookCounts[b.roomId] = (roomBookCounts[b.roomId] || 0) + 1;
+            });
+
+            const popularRooms = rooms.map(r => ({
+                id: r.id, name: r.name, type: r.type, capacity: r.capacity, 
+                count: roomBookCounts[r.id] || 0
+            })).sort((a, b) => b.count - a.count).slice(0, 5);
+
+            const popBody = document.getElementById('popular-rooms-body');
+            popBody.innerHTML = '';
+            
+            popularRooms.forEach((r, index) => {
+                popBody.innerHTML += `
+                    <tr class="border-b border-gray-100">
+                        <td class="py-5 font-bold text-gray-500 text-xl">${index + 1}</td>
+                        <td class="py-5">
+                            <p class="font-bold text-black text-xl">${r.name}</p>
+                            <p class="text-sm text-gray-500 mt-1">${r.type} • ${r.capacity} ที่นั่ง • ห้อง ${r.id}</p>
+                        </td>
+                        <td class="py-5 font-bold text-blue-600 text-2xl text-right pr-4">${r.count}</td>
+                    </tr>
+                `;
+            });
+        }
+
+        // ==========================================
+        // 6. UI สลับหน้า
+        // ==========================================
+        function switchTab(tabId, btn) {
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => {
+                b.classList.remove('active', 'bg-white', 'shadow', 'text-black');
+                b.classList.add('text-gray-500');
+            });
+
+            document.getElementById('tab-' + tabId).classList.add('active');
+            btn.classList.remove('text-gray-500');
+            btn.classList.add('active', 'bg-white', 'shadow', 'text-black');
+        }
+
+        window.onload = () => {
+            initData();
+            loadDashboard();
+            window.addEventListener('storage', loadDashboard);
+            setInterval(() => {
+                const rooms = JSON.parse(localStorage.getItem('libra_rooms') || '[]');
+                const bookings = JSON.parse(localStorage.getItem('libra_bookings') || '[]');
+                renderRoomStatus(rooms, bookings);
+                updateSummary(rooms, bookings);
+            }, 60000);
+        };
+    </script>
+</body>
+</html>

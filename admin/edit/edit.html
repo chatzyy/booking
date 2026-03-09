@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit - ระบบจองห้องสมุด</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.boxicons.com/3.0.8/fonts/basic/boxicons.min.css" rel="stylesheet">
+     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;700&display=swap');
+        body { font-family: 'Kanit', sans-serif; }
+        .status-badge { position: absolute; top: 10px; right: 10px; padding: 4px 12px; border-radius: 99px; font-size: 12px; font-weight: bold; }
+    </style>
+</head>
+<body class="bg-gray-50">
+   <div class="bg-gray-50 fixed w-full z-40">
+        <div class="flex shadow p-2 justify-between h-20">
+            <div class="flex gap-1">
+                <h1 class="flex justify-center items-center ml-7">
+                    <img src="/img/Gemini_Generated_Image_hs4eeths4eeths4e-removebg-preview.png" alt="" class="w-20 m-0 ">
+                </h1>
+                <div>
+                    <h1 class=" text-2xl font-bold">
+                        ระบบจองห้องสมุด
+                    </h1>
+                    <h1>
+                        มหาวิทยาลัยพะเยา
+                    </h1>
+                </div>
+            </div>
+        <div class="flex justify-center h-full ">
+            <a href="../index/home_page_admin.html" class="flex bg- text-black pl-6 pr-6 m-2 items-center rounded-xl hover:bg-gray-200"><i class="bx bx-home mr-2 text-xl"></i>ห้องทั้งหมด</a>
+            <a href="../history/history_room_admin.html" class="flex bg- text-black pl-6 pr-6 m-2 items-center rounded-xl hover:bg-gray-200"><i class="bx bx-calendar mr-1 text-xl"></i>การจองของฉัน</a>
+            <a href="../dashbord/dashbord.html" class="flex bg- text-black pl-6 pr-6 m-2 items-center rounded-xl hover:bg-gray-200"><i class="bx bx-bar-chart-big mr-2 text-xl" style="color:#000000;"></i>dashbord</a>
+            <a href="../edit/edit.html" class="flex bg-black text-white pl-6 pr-6 m-2 items-center rounded-xl "><i class="bx bx-edit-alt mr-2 text-xl" style="color:#ffffff"></i>แก้ไขห้อง</a>
+        </div>
+            <div class="flex justify-center items-center m-4">
+                <a href="../profile/profile_admin.html" class="flex border rounded-xl hover:bg-gray-200">
+                    <span id="display-admin-name" class="flex items-center mr-3 font-medium">
+                        <i class="bx bx-user m-1 text-xl p-1"></i>Admin
+                    </span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+
+<div class=" pt-40 pl-12">
+        <h1 id="modal_room_title" class=" text-3xl font-bold">
+            จัดการสถานะห้องทั้งหมด
+        </h1>
+        <h1 class="pt-2 text-gray-600">
+            เลือกห้องที่ต้องการแก้ไขสถานะ งดใช้งาน หรือ ปิดปรับปรุง
+        </h1>
+    </div>
+    <div class="flex ml-5 pt-10 pr-10 gap-5">
+        <input id="search" type="search" placeholder="ค้นหาห้อง..." class=" bg-gray-100 rounded-xl h-9 w-full pl-4 pr-4 ml-7">
+        <select name="list_type_room" id="room_type" class="w-60 bg-gray-100 rounded-xl pl-4 pr-4">
+            <option value="all">ทุกประเภท</option>
+            <option value="ห้องเดี่ยว">ห้องเดี่ยว</option>
+            <option value="ห้องกลุ่ม">ห้องกลุ่ม</option>
+        </select>
+        <select name="list_floor" id="floor_type" class="w-60 bg-gray-100 rounded-xl pl-4">
+            <option value="all">ทุกชั้น</option>
+            <option value="ชั้น G">ชั้น G</option>
+            <option value="ชั้น 1">ชั้น 1</option>
+            <option value="ชั้น 2">ชั้น 2</option>
+            <option value="ชั้น 3">ชั้น 3</option>
+             <option value="ชั้น 4">ชั้น 4</option>
+        </select>
+    </div>
+
+<div id="all_room"  class="grid grid-cols-4 pr-12">
+        <div class="w-80 m-12 rounded-b-2xl rounded-2xl shadow-xl hover:shadow-2xl ">
+            <img src="/img/IMG_1007.jpg" alt="" class=" rounded-t-2xl">
+            <div>
+                <h1 id="modal_room_title" class="pl-5 pt-5 text-xl font-bold">
+                    ห้องอ่านหนังสือ
+                </h1>
+                <h1 class="pl-5 text-gray-500" >
+                    ชั้น 4 หมายเลข CE08401
+                </h1>
+            </div>
+            <div class="m-5">
+                <h1>ห้องเดี่ยว</h1>
+                <div class="flex pt-3 items-center w-full gap-2">
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded" >โต๊ะอ่านหนังสือ</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded" >เก้าอี้</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded" >ปลั๊กไฟ</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded" >แอร์</h1>
+                </div>
+            </div>
+            <div class=" pb-5 m-5">
+                <button class="bg-blue-600 hover:bg-blue-700 text-white p-2 w-full rounded-xl transition flex justify-center items-center"
+                    onclick="openEditStatusModal(this)"
+                    data-room="CE08401"
+                ><i class="bx bx-edit-alt mr-2"></i>แก้ไขห้อง</button>
+            </div>
+        </div>  
+        
+        <div class="w-80 m-12 rounded-b-2xl rounded-2xl shadow-xl hover:shadow-2xl">
+            <img src="/img/IMG_1007.jpg" alt="" class=" rounded-t-2xl">
+            <div>
+                <h1 id="modal_room_title" class="pl-5 pt-5 text-xl font-bold">
+                    ห้องอ่านหนังสือ
+                </h1>
+                <h1 class="pl-5 text-gray-500" >
+                    ชั้น 4 หมายเลข CE08402
+                </h1>
+            </div>
+            <div class="m-5">
+                <h1>ห้องเดี่ยว</h1>
+                <div class="flex pt-3 items-center w-full gap-2">
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded">โต๊ะอ่านหนังสือ</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded" >เก้าอี้</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded" >ปลั๊กไฟ</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded" >แอร์</h1>
+                </div>
+            </div>
+            <div class=" pb-5 m-5">
+                <button class="bg-blue-600 hover:bg-blue-700 text-white p-2 w-full rounded-xl transition flex justify-center items-center"
+                    onclick="openEditStatusModal(this)"
+                    data-room="CE08402"
+                ><i class="bx bx-edit-alt mr-2"></i>แก้ไขห้อง</button>
+            </div>
+        </div>  
+
+        <div class="w-80 m-12 rounded-b-2xl rounded-2xl shadow-xl hover:shadow-2xl">
+            <img src="/img/IMG_1007.jpg" alt="" class=" rounded-t-2xl">
+            <div>
+                <h1 id="modal_room_title" class="pl-5 pt-5 text-xl font-bold">
+                    ห้องอ่านหนังสือ
+                </h1>
+                <h1 class="pl-5 text-gray-500" >
+                    ชั้น 4 หมายเลข CE08403
+                </h1>
+            </div>
+            <div class="m-5">
+                <h1>ห้องเดี่ยว</h1>
+                <div class="flex pt-3 items-center w-full gap-2">
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded">โต๊ะอ่านหนังสือ</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded" >เก้าอี้</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded" >ปลั๊กไฟ</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded" >แอร์</h1>
+                </div>
+            </div>
+            <div class=" pb-5 m-5">
+                <button class="bg-blue-600 hover:bg-blue-700 text-white p-2 w-full rounded-xl transition flex justify-center items-center"
+                    onclick="openEditStatusModal(this)"
+                    data-room="CE08403"
+                ><i class="bx bx-edit-alt mr-2"></i>แก้ไขห้อง</button>
+            </div>
+        </div>  
+
+        <div class="w-80 m-12 rounded-b-2xl rounded-2xl shadow-xl hover:shadow-2xl">
+            <img src="/img/IMG_1007.jpg" alt="" class=" rounded-t-2xl">
+            <div>
+                <h1 id="modal_room_title" class="pl-5 pt-5 text-xl font-bold">
+                    ห้องอ่านหนังสือ
+                </h1>
+                <h1 class="pl-5 text-gray-500" >
+                    ชั้น 4 หมายเลข CE08404
+                </h1>
+            </div>
+            <div class="m-5">
+                <h1>ห้องเดี่ยว</h1>
+                <div class="flex pt-3 items-center w-full gap-2">
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded">โต๊ะอ่านหนังสือ</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded" >เก้าอี้</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded" >ปลั๊กไฟ</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded" >แอร์</h1>
+                </div>
+            </div>
+            <div class=" pb-5 m-5">
+                 <button class="bg-blue-600 hover:bg-blue-700 text-white p-2 w-full rounded-xl transition flex justify-center items-center"
+                    onclick="openEditStatusModal(this)"
+                    data-room="CE08404"
+                ><i class="bx bx-edit-alt mr-2"></i>แก้ไขห้อง</button>
+            </div>
+        </div>  
+
+        <div class="w-80 m-12 rounded-b-2xl rounded-2xl shadow-xl hover:shadow-2xl">
+            <img src="/img/IMG_1007.jpg" alt="" class=" rounded-t-2xl">
+            <div>
+                <h1 id="modal_room_title" class="pl-5 pt-5 text-xl font-bold">
+                    ห้องอ่านหนังสือ
+                </h1>
+                <h1 class="pl-5 text-gray-500" >
+                    ชั้น 4 หมายเลข CE08405
+                </h1>
+            </div>
+            <div class="m-5">
+                <h1>ห้องเดี่ยว</h1>
+                <div class="flex pt-3 items-center w-full gap-2">
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded">โต๊ะอ่านหนังสือ</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded" >เก้าอี้</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded" >ปลั๊กไฟ</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded" >แอร์</h1>
+                </div>
+            </div>
+            <div class=" pb-5 m-5">
+                 <button class="bg-blue-600 hover:bg-blue-700 text-white p-2 w-full rounded-xl transition flex justify-center items-center"
+                    onclick="openEditStatusModal(this)"
+                    data-room="CE08405"
+                ><i class="bx bx-edit-alt mr-2"></i>แก้ไขห้อง</button>
+            </div>
+        </div>  
+
+        <div class="w-80 m-12 rounded-b-2xl rounded-2xl shadow-xl hover:shadow-2xl">
+            <img src="/img/IMG_1007.jpg" alt="" class=" rounded-t-2xl">
+            <div>
+                <h1 id="modal_room_title" class="pl-5 pt-5 text-xl font-bold">
+                    ห้องอ่านหนังสือ
+                </h1>
+                <h1 class="pl-5 text-gray-500" >
+                    ชั้น 4 หมายเลข CE08406
+                </h1>
+            </div>
+            <div class="m-5">
+                <h1>ห้องเดี่ยว</h1>
+                <div class="flex pt-3 items-center w-full gap-2">
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded">โต๊ะอ่านหนังสือ</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded" >เก้าอี้</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded" >ปลั๊กไฟ</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded" >แอร์</h1>
+                </div>
+            </div>
+            <div class=" pb-5 m-5">
+                 <button class="bg-blue-600 hover:bg-blue-700 text-white p-2 w-full rounded-xl transition flex justify-center items-center"
+                    onclick="openEditStatusModal(this)"
+                    data-room="CE08406"
+                ><i class="bx bx-edit-alt mr-2"></i>แก้ไขห้อง</button>
+            </div>
+        </div>  
+
+        <div class="w-80 m-12 rounded-b-2xl rounded-2xl shadow-xl hover:shadow-2xl">
+            <img src="/img/IMG_1007.jpg" alt="" class=" rounded-t-2xl">
+            <div>
+                <h1 id="modal_room_title" class="pl-5 pt-5 text-xl font-bold">
+                    ห้องอ่านหนังสือ
+                </h1>
+                <h1 class="pl-5 text-gray-500" >
+                    ชั้น 4 หมายเลข CE08407
+                </h1>
+            </div>
+            <div class="m-5">
+                <h1>ห้องเดี่ยว</h1>
+                <div class="flex pt-3 items-center w-full gap-2">
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded">โต๊ะอ่านหนังสือ</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded" >เก้าอี้</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded" >ปลั๊กไฟ</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded" >แอร์</h1>
+                </div>
+            </div>
+            <div class=" pb-5 m-5">
+                 <button class="bg-blue-600 hover:bg-blue-700 text-white p-2 w-full rounded-xl transition flex justify-center items-center"
+                    onclick="openEditStatusModal(this)"
+                    data-room="CE08407"
+                ><i class="bx bx-edit-alt mr-2"></i>แก้ไขห้อง</button>
+            </div>
+        </div>  
+
+        <div class="w-80 m-12 rounded-b-2xl rounded-2xl shadow-xl hover:shadow-2xl">
+            <img src="/img/IMG_1007.jpg" alt="" class=" rounded-t-2xl">
+            <div>
+                <h1 id="modal_room_title" class="pl-5 pt-5 text-xl font-bold">
+                    ห้องอ่านหนังสือ
+                </h1>
+                <h1 class="pl-5 text-gray-500" >
+                    ชั้น 4 หมายเลข CE08408
+                </h1>
+            </div>
+            <div class="m-5">
+                <h1>ห้องเดี่ยว</h1>
+                <div class="flex pt-3 items-center w-full gap-2">
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded">โต๊ะอ่านหนังสือ</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded" >เก้าอี้</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded" >ปลั๊กไฟ</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded" >แอร์</h1>
+                </div>
+            </div>
+            <div class=" pb-5 m-5">
+                 <button class="bg-blue-600 hover:bg-blue-700 text-white p-2 w-full rounded-xl transition flex justify-center items-center"
+                    onclick="openEditStatusModal(this)"
+                    data-room="CE08408"
+                ><i class="bx bx-edit-alt mr-2"></i>แก้ไขห้อง</button>
+            </div>
+        </div>  
+
+        <div class="w-80 m-12 rounded-b-2xl rounded-2xl shadow-xl hover:shadow-2xl">
+            <img src="/img/IMG_1007.jpg" alt="" class=" rounded-t-2xl">
+            <div>
+                <h1 id="modal_room_title" class="pl-5 pt-5 text-xl font-bold">
+                    ห้องอ่านหนังสือ
+                </h1>
+                <h1 class="pl-5 text-gray-500" >
+                    ชั้น 4 หมายเลข CE08409
+                </h1>
+            </div>
+            <div class="m-5">
+                <h1>ห้องเดี่ยว</h1>
+                <div class="flex pt-3 items-center w-full gap-2">
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded">โต๊ะอ่านหนังสือ</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded" >เก้าอี้</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded" >ปลั๊กไฟ</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded" >แอร์</h1>
+                </div>
+            </div>
+            <div class=" pb-5 m-5">
+                 <button class="bg-blue-600 hover:bg-blue-700 text-white p-2 w-full rounded-xl transition flex justify-center items-center"
+                    onclick="openEditStatusModal(this)"
+                    data-room="CE08409"
+                ><i class="bx bx-edit-alt mr-2"></i>แก้ไขห้อง</button>
+            </div>
+        </div>  
+
+        <div class="w-80 m-12 rounded-b-2xl rounded-2xl shadow-xl hover:shadow-2xl">
+            <img src="/img/IMG_1007.jpg" alt="" class=" rounded-t-2xl">
+            <div>
+                <h1 id="modal_room_title" class="pl-5 pt-5 text-xl font-bold">
+                    ห้องอ่านหนังสือ
+                </h1>
+                <h1 class="pl-5 text-gray-500" >
+                    ชั้น 4 หมายเลข CE08410
+                </h1>
+            </div>
+            <div class="m-5">
+                <h1>ห้องเดี่ยว</h1>
+                <div class="flex pt-3 items-center w-full gap-2">
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded">โต๊ะอ่านหนังสือ</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded" >เก้าอี้</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded" >ปลั๊กไฟ</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded" >แอร์</h1>
+                </div>
+            </div>
+            <div class=" pb-5 m-5">
+                 <button class="bg-blue-600 hover:bg-blue-700 text-white p-2 w-full rounded-xl transition flex justify-center items-center"
+                    onclick="openEditStatusModal(this)"
+                    data-room="CE08410"
+                ><i class="bx bx-edit-alt mr-2"></i>แก้ไขห้อง</button>
+            </div>
+        </div>  
+
+        <div class="w-80 m-12 rounded-b-2xl rounded-2xl shadow-xl hover:shadow-2xl">
+            <img src="/img/IMG_1007.jpg" alt="" class=" rounded-t-2xl">
+            <div>
+                <h1 id="modal_room_title" class="pl-5 pt-5 text-xl font-bold">
+                    ห้องอ่านหนังสือ
+                </h1>
+                <h1 class="pl-5 text-gray-500" >
+                    ชั้น 4 หมายเลข CE08411
+                </h1>
+            </div>
+            <div class="m-5">
+                <h1>ห้องเดี่ยว</h1>
+                <div class="flex pt-3 items-center w-full gap-2">
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded">โต๊ะอ่านหนังสือ</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded" >เก้าอี้</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded" >ปลั๊กไฟ</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded" >แอร์</h1>
+                </div>
+            </div>
+            <div class=" pb-5 m-5">
+                 <button class="bg-blue-600 hover:bg-blue-700 text-white p-2 w-full rounded-xl transition flex justify-center items-center"
+                    onclick="openEditStatusModal(this)"
+                    data-room="CE08411"
+                ><i class="bx bx-edit-alt mr-2"></i>แก้ไขห้อง</button>
+            </div>
+        </div>  
+
+        <div class="w-80 m-12 rounded-b-2xl rounded-2xl shadow-xl hover:shadow-2xl">
+            <img src="/img/IMG_1007.jpg" alt="" class=" rounded-t-2xl">
+            <div>
+                <h1 id="modal_room_title" class="pl-5 pt-5 text-xl font-bold">
+                    ห้องอ่านหนังสือ
+                </h1>
+                <h1 class="pl-5 text-gray-500" >
+                    ชั้น 4 หมายเลข CE08412
+                </h1>
+            </div>
+            <div class="m-5">
+                <h1>ห้องเดี่ยว</h1>
+                <div class="flex pt-3 items-center w-full gap-2">
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded">โต๊ะอ่านหนังสือ</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded" >เก้าอี้</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded" >ปลั๊กไฟ</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded" >แอร์</h1>
+                </div>
+            </div>
+            <div class=" pb-5 m-5">
+                 <button class="bg-blue-600 hover:bg-blue-700 text-white p-2 w-full rounded-xl transition flex justify-center items-center"
+                    onclick="openEditStatusModal(this)"
+                    data-room="CE08412"
+                ><i class="bx bx-edit-alt mr-2"></i>แก้ไขห้อง</button>
+            </div>
+        </div>  
+
+        <div class="w-80 m-12 rounded-b-2xl rounded-2xl shadow-xl hover:shadow-2xl">
+            <img src="/img/IMG_1008.jpg" alt="" class=" rounded-t-2xl">
+            <div>
+                <h1 id="modal_room_title" class="pl-5 pt-5 text-xl font-bold">
+                    ห้องประชุม
+                </h1>
+                <h1 class="pl-5 text-gray-500" >
+                    ชั้น 4 หมายเลข CE08413
+                </h1>
+            </div>
+            <div class="m-5">
+                <h1>ห้องกลุ่ม</h1>
+                <div class="flex flex-wrap pt-3 items-center w-full gap-2">
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded">โต๊ะประชุม</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded" >เก้าอี้</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded" >ปลั๊กไฟ</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded" >แอร์</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded" >กระดาน</h1>
+                </div>
+            </div>
+            <div class=" pb-5 m-5">
+                 <button class="bg-blue-600 hover:bg-blue-700 text-white p-2 w-full rounded-xl transition flex justify-center items-center"
+                    onclick="openEditStatusModal(this)"
+                    data-room="CE08413"
+                ><i class="bx bx-edit-alt mr-2"></i>แก้ไขห้อง</button>
+            </div>
+        </div>  
+
+        <div class="w-80 m-12 rounded-b-2xl rounded-2xl shadow-xl hover:shadow-2xl">
+            <img src="/img/IMG_1008.jpg" alt="" class=" rounded-t-2xl">
+            <div>
+                <h1 id="modal_room_title" class="pl-5 pt-5 text-xl font-bold">
+                    ห้องประชุม
+                </h1>
+                <h1 class="pl-5 text-gray-500" >
+                    ชั้น 4 หมายเลข CE08414
+                </h1>
+            </div>
+            <div class="m-5">
+                <h1>ห้องกลุ่ม</h1>
+                <div class="flex flex-wrap pt-3 items-center w-full gap-2">
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded">โต๊ะประชุม</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded" >เก้าอี้</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded" >ปลั๊กไฟ</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded" >แอร์</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded" >กระดาน</h1>
+                </div>
+            </div>
+            <div class=" pb-5 m-5">
+                 <button class="bg-blue-600 hover:bg-blue-700 text-white p-2 w-full rounded-xl transition flex justify-center items-center"
+                    onclick="openEditStatusModal(this)"
+                    data-room="CE08414"
+                ><i class="bx bx-edit-alt mr-2"></i>แก้ไขห้อง</button>
+            </div>
+        </div>  
+
+        <div class="w-80 m-12 rounded-b-2xl rounded-2xl shadow-xl hover:shadow-2xl">
+            <img src="/img/IMG_1008.jpg" alt="" class=" rounded-t-2xl">
+            <div>
+                <h1 id="modal_room_title" class="pl-5 pt-5 text-xl font-bold">
+                    ห้องประชุม
+                </h1>
+                <h1 class="pl-5 text-gray-500" >
+                    ชั้น 4 หมายเลข CE08415
+                </h1>
+            </div>
+            <div class="m-5">
+                <h1>ห้องกลุ่ม</h1>
+                <div class="flex flex-wrap pt-3 items-center w-full gap-2">
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded">โต๊ะประชุม</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded" >เก้าอี้</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded" >ปลั๊กไฟ</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded" >แอร์</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded" >กระดาน</h1>
+                </div>
+            </div>
+            <div class=" pb-5 m-5">
+                 <button class="bg-blue-600 hover:bg-blue-700 text-white p-2 w-full rounded-xl transition flex justify-center items-center"
+                    onclick="openEditStatusModal(this)"
+                    data-room="CE08415"
+                ><i class="bx bx-edit-alt mr-2"></i>แก้ไขห้อง</button>
+            </div>
+        </div>  
+
+        <div class="w-80 m-12 rounded-b-2xl rounded-2xl shadow-xl hover:shadow-2xl">
+            <img src="/img/IMG_1008.jpg" alt="" class=" rounded-t-2xl">
+            <div>
+                <h1 id="modal_room_title" class="pl-5 pt-5 text-xl font-bold">
+                    ห้องประชุม
+                </h1>
+                <h1 class="pl-5 text-gray-500" >
+                    ชั้น 4 หมายเลข CE08416
+                </h1>
+            </div>
+            <div class="m-5">
+                <h1>ห้องกลุ่ม</h1>
+                <div class="flex flex-wrap pt-3 items-center w-full gap-2">
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded">โต๊ะประชุม</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded" >เก้าอี้</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded" >ปลั๊กไฟ</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded" >แอร์</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded" >กระดาน</h1>
+                </div>
+            </div>
+            <div class=" pb-5 m-5">
+                 <button class="bg-blue-600 hover:bg-blue-700 text-white p-2 w-full rounded-xl transition flex justify-center items-center"
+                    onclick="openEditStatusModal(this)"
+                    data-room="CE08416"
+                ><i class="bx bx-edit-alt mr-2"></i>แก้ไขห้อง</button>
+            </div>
+        </div>  
+
+        <div class="w-80 m-12 rounded-b-2xl rounded-2xl shadow-xl hover:shadow-2xl">
+            <img src="/img/IMG_1014.jpg" alt="" class=" rounded-t-2xl">
+            <div>
+                <h1 id="modal_room_title" class="pl-5 pt-5 text-xl font-bold">
+                    ห้องประชุม
+                </h1>
+                <h1 class="pl-5 text-gray-500" >
+                    ชั้น 3 หมายเลข CE08310
+                </h1>
+            </div>
+            <div class="m-5">
+                <h1>ห้องกลุ่ม</h1>
+                <div class="flex flex-wrap pt-3 w-full gap-2">
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded">โต๊ะประชุม</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded" >เก้าอี้</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded">โซฟาลม</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded" >ปลั๊กไฟ</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded" >แอร์</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded" >กระดาน</h1>
+                </div>
+            </div>
+            <div class=" pb-5 m-5">
+                 <button class="bg-blue-600 hover:bg-blue-700 text-white p-2 w-full rounded-xl transition flex justify-center items-center"
+                    onclick="openEditStatusModal(this)"
+                    data-room="CE08310"
+                ><i class="bx bx-edit-alt mr-2"></i>แก้ไขห้อง</button>
+            </div>
+        </div>  
+
+        <div class="w-80 m-12 rounded-b-2xl rounded-2xl shadow-xl hover:shadow-2xl">
+            <img src="/img/IMG_1022.jpg" alt="" class=" rounded-t-2xl">
+            <div>
+                <h1 id="modal_room_title" class="pl-5 pt-5 text-xl font-bold">
+                    ห้องประชุม
+                </h1>
+                <h1 class="pl-5 text-gray-500" >
+                    ชั้น 3 หมายเลข CE08311
+                </h1>
+            </div>
+            <div class="m-5">
+                <h1>ห้องกลุ่ม</h1>
+                <div class="flex flex-wrap pt-3 items-center w-full gap-2">
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded">โต๊ะประชุม</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded" >เก้าอี้</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded">โซฟาลม</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded" >ปลั๊กไฟ</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded" >แอร์</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded" >กระดาน</h1>
+                </div>
+            </div>
+            <div class=" pb-5 m-5">
+                 <button class="bg-blue-600 hover:bg-blue-700 text-white p-2 w-full rounded-xl transition flex justify-center items-center"
+                    onclick="openEditStatusModal(this)"
+                    data-room="CE08311"
+                ><i class="bx bx-edit-alt mr-2"></i>แก้ไขห้อง</button>
+            </div>
+        </div>  
+
+        <div class="w-80 m-12 rounded-b-2xl rounded-2xl shadow-xl hover:shadow-2xl">
+            <img src="/img/IMG_1020.jpg" alt="" class=" rounded-t-2xl">
+            <div>
+                <h1 id="modal_room_title" class="pl-5 pt-5 text-xl font-bold">
+                    ห้องประชุม
+                </h1>
+                <h1 class="pl-5 text-gray-500" >
+                    ชั้น 3 หมายเลข CE08312
+                </h1>
+            </div>
+            <div class="m-5">
+                <h1>ห้องกลุ่ม</h1>
+                <div class="flex flex-wrap pt-3 items-center w-full gap-2">
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded">โต๊ะประชุม</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded" >เก้าอี้</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded">โซฟาลม</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded" >ปลั๊กไฟ</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded" >แอร์</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded" >กระดาน</h1>
+                </div>
+            </div>
+            <div class=" pb-5 m-5">
+                 <button class="bg-blue-600 hover:bg-blue-700 text-white p-2 w-full rounded-xl transition flex justify-center items-center"
+                    onclick="openEditStatusModal(this)"
+                    data-room="CE08312"
+                ><i class="bx bx-edit-alt mr-2"></i>แก้ไขห้อง</button>
+            </div>
+        </div>  
+
+        <div class="w-80 m-12 rounded-b-2xl rounded-2xl shadow-xl hover:shadow-2xl">
+            <img src="/img/IMG_1014.jpg" alt="" class=" rounded-t-2xl">
+            <div>
+                <h1 id="modal_room_title" class="pl-5 pt-5 text-xl font-bold">
+                    ห้องประชุม
+                </h1>
+                <h1 class="pl-5 text-gray-500" >
+                    ชั้น 3 หมายเลข CE08313
+                </h1>
+            </div>
+            <div class="m-5">
+                <h1>ห้องกลุ่ม</h1>
+                <div class="flex flex-wrap pt-3 items-center w-full gap-2">
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded">โต๊ะประชุม</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded" >เก้าอี้</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded">โซฟาลม</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded" >ปลั๊กไฟ</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded" >แอร์</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded" >กระดาน</h1>
+                </div>
+            </div>
+            <div class=" pb-5 m-5">
+                 <button class="bg-blue-600 hover:bg-blue-700 text-white p-2 w-full rounded-xl transition flex justify-center items-center"
+                    onclick="openEditStatusModal(this)"
+                    data-room="CE08313"
+                ><i class="bx bx-edit-alt mr-2"></i>แก้ไขห้อง</button>
+            </div>
+        </div>  
+
+        <div class="w-80 m-12 rounded-b-2xl rounded-2xl shadow-xl hover:shadow-2xl">
+            <img src="/img/IMG_1022.jpg" alt="" class=" rounded-t-2xl">
+            <div>
+                <h1 id="modal_room_title" class="pl-5 pt-5 text-xl font-bold">
+                    ห้องประชุม
+                </h1>
+                <h1 class="pl-5 text-gray-500" >
+                    ชั้น 3 หมายเลข CE08314
+                </h1>
+            </div>
+            <div class="m-5">
+                <h1>ห้องกลุ่ม</h1>
+                <div class="flex flex-wrap pt-3 items-center w-full gap-2">
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded">โต๊ะประชุม</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded" >เก้าอี้</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded">โซฟาลม</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded" >ปลั๊กไฟ</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded" >แอร์</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded" >กระดาน</h1>
+                </div>
+            </div>
+            <div class=" pb-5 m-5">
+                 <button class="bg-blue-600 hover:bg-blue-700 text-white p-2 w-full rounded-xl transition flex justify-center items-center"
+                    onclick="openEditStatusModal(this)"
+                    data-room="CE08314"
+                ><i class="bx bx-edit-alt mr-2"></i>แก้ไขห้อง</button>
+            </div>
+        </div>  
+
+        <div class="w-80 m-12 rounded-b-2xl rounded-2xl shadow-xl hover:shadow-2xl">
+            <img src="/img/IMG_1020.jpg" alt="" class=" rounded-t-2xl">
+            <div>
+                <h1 id="modal_room_title" class="pl-5 pt-5 text-xl font-bold">
+                    ห้องประชุม
+                </h1>
+                <h1 class="pl-5 text-gray-500" >
+                    ชั้น 3 หมายเลข CE08315
+                </h1>
+            </div>
+            <div class="m-5">
+                <h1>ห้องกลุ่ม</h1>
+                <div class="flex flex-wrap pt-3 items-center w-full gap-2">
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded">โต๊ะประชุม</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded" >เก้าอี้</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded">โซฟาลม</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded" >ปลั๊กไฟ</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded" >แอร์</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded" >กระดาน</h1>
+                </div>
+            </div>
+            <div class=" pb-5 m-5">
+                 <button class="bg-blue-600 hover:bg-blue-700 text-white p-2 w-full rounded-xl transition flex justify-center items-center"
+                    onclick="openEditStatusModal(this)"
+                    data-room="CE08315"
+                ><i class="bx bx-edit-alt mr-2"></i>แก้ไขห้อง</button>
+            </div>
+        </div>  
+
+        <div class="w-80 m-12 rounded-b-2xl rounded-2xl shadow-xl hover:shadow-2xl">
+            <img src="/img/IMG_1014.jpg" alt="" class=" rounded-t-2xl">
+            <div>
+                <h1 id="modal_room_title" class="pl-5 pt-5 text-xl font-bold">
+                    ห้องประชุม
+                </h1>
+                <h1 class="pl-5 text-gray-500" >
+                    ชั้น 3 หมายเลข CE08316
+                </h1>
+            </div>
+            <div class="m-5">
+                <h1>ห้องกลุ่ม</h1>
+                <div class="flex flex-wrap pt-3 items-center w-full gap-2">
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded">โต๊ะประชุม</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded" >เก้าอี้</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded">โซฟาลม</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded" >ปลั๊กไฟ</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded" >แอร์</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded" >กระดาน</h1>
+                </div>
+            </div>
+            <div class=" pb-5 m-5">
+                 <button class="bg-blue-600 hover:bg-blue-700 text-white p-2 w-full rounded-xl transition flex justify-center items-center"
+                    onclick="openEditStatusModal(this)"
+                    data-room="CE08316"
+                ><i class="bx bx-edit-alt mr-2"></i>แก้ไขห้อง</button>
+            </div>
+        </div>  
+
+        <div class="w-80 m-12 rounded-b-2xl rounded-2xl shadow-xl hover:shadow-2xl">
+            <img src="/img/IMG_1020.jpg" alt="" class=" rounded-t-2xl">
+            <div>
+                <h1 id="modal_room_title" class="pl-5 pt-5 text-xl font-bold">
+                    ห้องคาราโอเกะ
+                </h1>
+                <h1 class="pl-5 text-gray-500" >
+                    ชั้น G หมายเลข CE08317
+                </h1>
+            </div>
+            <div class="m-5">
+                <h1>ห้องกลุ่ม</h1>
+                <div class="flex flex-wrap pt-3 items-center w-full gap-2">
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded">โต๊ะประชุม</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded" >เก้าอี้</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded">โซฟาลม</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded" >ปลั๊กไฟ</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded" >แอร์</h1>
+                    <h1 class=" bg-gray-200 pl-2 pr-2 text-xs rounded" >TV</h1>
+                </div>
+            </div>
+            <div class=" pb-5 m-5">
+                 <button class="bg-blue-600 hover:bg-blue-700 text-white p-2 w-full rounded-xl transition flex justify-center items-center"
+                    onclick="openEditStatusModal(this)"
+                    data-room="CE08317"
+                ><i class="bx bx-edit-alt mr-2"></i>แก้ไขห้อง</button>
+            </div>
+        </div>  
+    </div>
+
+<div id="edit_status_model" class="justify-center items-center fixed inset-0 z-50 hidden bg-black/50 backdrop-blur-sm">
+        <div class="bg-white w-[400px] p-8 rounded-2xl shadow-2xl">
+            <div class="text-center mb-6">
+                <div class="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="bx bx-cog text-3xl text-blue-600"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-gray-800">ตั้งค่าสถานะห้อง</h2>
+                <p class="text-gray-500 mt-1">ห้องหมายเลข: <span id="target_room_id" class="font-bold text-blue-600"></span></p>
+            </div>
+
+            <div class="space-y-4">
+                <label class="block p-4 border-2 border-gray-100 rounded-xl cursor-pointer hover:border-green-400 hover:bg-green-50 transition">
+                    <input type="radio" name="room_status" value="เปิดใช้งานปกติ" class="hidden peer" checked>
+                    <div class="flex items-center peer-checked:text-green-600">
+                        <i class="bx bx-check-circle text-2xl mr-3"></i>
+                        <span class="font-medium text-lg">เปิดใช้งานปกติ</span>
+                    </div>
+                </label>
+
+                <label class="block p-4 border-2 border-gray-100 rounded-xl cursor-pointer hover:border-orange-400 hover:bg-orange-50 transition">
+                    <input type="radio" name="room_status" value="ปิดปรับปรุง" class="hidden peer">
+                    <div class="flex items-center peer-checked:text-orange-600">
+                        <i class="bx bx-wrench text-2xl mr-3"></i>
+                        <span class="font-medium text-lg">ปิดปรับปรุง</span>
+                    </div>
+                </label>
+
+                <label class="block p-4 border-2 border-gray-100 rounded-xl cursor-pointer hover:border-red-400 hover:bg-red-50 transition">
+                    <input type="radio" name="room_status" value="งดใช้งาน" class="hidden peer">
+                    <div class="flex items-center peer-checked:text-red-600">
+                        <i class="bx bx-block text-2xl mr-3"></i>
+                        <span class="font-medium text-lg">งดใช้งาน</span>
+                    </div>
+                </label>
+            </div>
+
+            <div class="flex gap-3 mt-8">
+                <button type="button" onclick="closeEditStatusModal()" class="flex-1 py-3 text-gray-500 font-medium hover:bg-gray-100 rounded-xl transition">ยกเลิก</button>
+                <button type="button" onclick="saveRoomStatus()" class="flex-1 py-3 bg-blue-600 text-white font-medium rounded-xl hover:bg-blue-700 shadow-lg transition">บันทึก</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="no_room_found" class="hidden w-full text-center py-20 col-span-4">
+        <h1 class="text-2xl text-gray-500 font-bold">ไม่พบห้องที่ค้นหา</h1>
+        <p class="text-gray-400">กรุณาเลือกเงื่อนไขการค้นหาใหม่อีกครั้ง</p>
+    </div>
+
+    <script>
+document.addEventListener('DOMContentLoaded', () => {
+    // ----------------------------------------------------------------
+    // ส่วนที่ 1: ระบบค้นหา (Search) และ คัดกรอง (Filter)
+    // ----------------------------------------------------------------
+    const searchInput = document.getElementById('search');
+    const roomTypeSelect = document.getElementById('room_type');
+    const floorTypeSelect = document.getElementById('floor_type');
+    const allRooms = document.querySelectorAll('#all_room > div');
+    const noRoomFoundMsg = document.getElementById('no_room_found');
+
+    function filterRooms() {
+        const searchText = searchInput ? searchInput.value.toLowerCase().trim() : '';
+        const selectedType = roomTypeSelect ? roomTypeSelect.value : 'all';
+        const selectedFloor = floorTypeSelect ? floorTypeSelect.value : 'all';
+        let visibleCount = 0;
+
+        allRooms.forEach(room => {
+            const roomNameEl = room.querySelector('h1.text-xl.font-bold');
+            const roomDetailsEl = room.querySelector('h1.text-gray-500');
+            const roomTypeEl = room.querySelector('.m-5 > h1');
+
+            const roomName = roomNameEl ? roomNameEl.textContent.toLowerCase().trim() : '';
+            const roomDetails = roomDetailsEl ? roomDetailsEl.textContent.toLowerCase().trim() : '';
+            const roomType = roomTypeEl ? roomTypeEl.textContent.trim() : '';
+
+            const matchesSearch = searchText === '' || roomName.includes(searchText) || roomDetails.includes(searchText);
+            const matchesType = (selectedType === 'all') || (roomType === selectedType);
+            const matchesFloor = (selectedFloor === 'all') || roomDetails.includes(selectedFloor.toLowerCase());
+
+            if (matchesSearch && matchesType && matchesFloor) {
+                room.style.display = '';
+                visibleCount++;
+            } else {
+                room.style.display = 'none';
+            }
+        });
+
+        if (noRoomFoundMsg) {
+            if (visibleCount === 0) noRoomFoundMsg.classList.remove('hidden');
+            else noRoomFoundMsg.classList.add('hidden');
+        }
+    }
+
+    if (searchInput) searchInput.addEventListener('input', filterRooms);
+    if (roomTypeSelect) roomTypeSelect.addEventListener('change', filterRooms);
+    if (floorTypeSelect) floorTypeSelect.addEventListener('change', filterRooms);
+
+
+    // ----------------------------------------------------------------
+    // ส่วนที่ 2: โหลดสถานะที่เคยบันทึกไว้เมื่อเปิดหน้าเว็บ (เพื่อไม่ให้มันรีเซ็ต)
+    // ----------------------------------------------------------------
+    const editButtons = document.querySelectorAll('button[data-room]');
+    editButtons.forEach(button => {
+        const roomId = button.getAttribute('data-room');
+        const savedStatus = localStorage.getItem('roomStatus_' + roomId); // ดึงค่าจากเบราว์เซอร์
+        
+        if (savedStatus && savedStatus !== 'เปิดใช้งานปกติ') {
+            const card = button.closest('.w-80');
+            card.setAttribute('data-status', savedStatus);
+            
+            const img = card.querySelector('img');
+            img.classList.add('grayscale', 'opacity-50');
+            card.classList.add('relative');
+
+            const badge = document.createElement('div');
+            if (savedStatus === 'ปิดปรับปรุง') {
+                badge.className = 'status-badge absolute top-4 right-4 bg-orange-500 text-white px-3 py-1 rounded-xl text-sm font-bold shadow-lg flex items-center';
+                badge.innerHTML = '<i class="bx bx-wrench mr-1"></i> ปิดปรับปรุง';
+            } else if (savedStatus === 'งดใช้งาน') {
+                badge.className = 'status-badge absolute top-4 right-4 bg-red-600 text-white px-3 py-1 rounded-xl text-sm font-bold shadow-lg flex items-center';
+                badge.innerHTML = '<i class="bx bx-block mr-1"></i> งดใช้งาน';
+            }
+            card.insertBefore(badge, card.firstChild);
+        }
+    });
+});
+
+// ----------------------------------------------------------------
+// ส่วนที่ 3: ระบบจัดการ Modal และบันทึกสถานะห้อง
+// ----------------------------------------------------------------
+const editModal = document.getElementById('edit_status_model');
+const roomIdSpan = document.getElementById('target_room_id');
+let currentEditButton = null;
+
+window.openEditStatusModal = function(button) {
+    const roomId = button.getAttribute('data-room');
+    roomIdSpan.innerText = roomId;
+    currentEditButton = button;
+    
+    // ดึงค่าสถานะจาก localStorage มาแสดงใน Modal ถ้าไม่มีให้ใช้ 'เปิดใช้งานปกติ'
+    const currentStatus = localStorage.getItem('roomStatus_' + roomId) || 'เปิดใช้งานปกติ';
+    
+    const radioToSelect = document.querySelector(`input[value="${currentStatus}"]`);
+    if (radioToSelect) radioToSelect.checked = true;
+
+    editModal.classList.remove('hidden');
+    editModal.classList.add('flex');
+}
+
+window.closeEditStatusModal = function() {
+    editModal.classList.add('hidden');
+    editModal.classList.remove('flex');
+}
+
+window.saveRoomStatus = function() {
+    const selectedStatus = document.querySelector('input[name="room_status"]:checked').value;
+    const roomId = roomIdSpan.innerText;
+    const card = currentEditButton.closest('.w-80');
+    
+    // สำคัญ: บันทึกค่าลงใน Local Storage (เพื่อให้หน้า Home มองเห็น)
+    localStorage.setItem('roomStatus_' + roomId, selectedStatus);
+    
+    // อัปเดต Data Attribute บนการ์ด
+    card.setAttribute('data-status', selectedStatus);
+    
+    // ลบ Badge เก่า (ถ้ามี)
+    const existingBadge = card.querySelector('.status-badge');
+    if (existingBadge) existingBadge.remove();
+    
+    // รีเซ็ตภาพ
+    const img = card.querySelector('img');
+    img.classList.remove('grayscale', 'opacity-50');
+    card.classList.add('relative');
+
+    // สร้าง Badge ใหม่และทำภาพสีเทา
+    if (selectedStatus === 'ปิดปรับปรุง') {
+        img.classList.add('grayscale', 'opacity-50');
+        const badge = document.createElement('div');
+        badge.className = 'status-badge absolute top-4 right-4 bg-orange-500 text-white px-3 py-1 rounded-xl text-sm font-bold shadow-lg flex items-center';
+        badge.innerHTML = '<i class="bx bx-wrench mr-1"></i> ปิดปรับปรุง';
+        card.insertBefore(badge, card.firstChild);
+    } else if (selectedStatus === 'งดใช้งาน') {
+        img.classList.add('grayscale', 'opacity-50');
+        const badge = document.createElement('div');
+        badge.className = 'status-badge absolute top-4 right-4 bg-red-600 text-white px-3 py-1 rounded-xl text-sm font-bold shadow-lg flex items-center';
+        badge.innerHTML = '<i class="bx bx-block mr-1"></i> งดใช้งาน';
+        card.insertBefore(badge, card.firstChild);
+    }
+    
+    closeEditStatusModal();
+}
+
+if (editModal) {
+    editModal.addEventListener('click', function(event) {
+        if (event.target === editModal) {
+            closeEditStatusModal();
+        }
+    });
+}
+</script>
+    <script src="/javascript/javascript.js"></script>
+</body>
+</html>
