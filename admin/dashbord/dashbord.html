@@ -187,47 +187,42 @@
 
     </main>
 
-    <script>
+   <script>
         // ==========================================
-        // 1. ระบบจำลองฐานข้อมูล (LocalStorage) + อัปเดต 24 ห้อง
+        // 1. ระบบจำลองฐานข้อมูล (LocalStorage)
         // ==========================================
         const initialRooms = [
-            // ชั้น 4 - ห้องอ่านหนังสือ (ห้องเดี่ยว) 12 ห้อง
-            { id: 'CE08401', name: 'ห้องอ่านหนังสือ', type: 'ห้องเดี่ยว', floor: '4', capacity: 1, maintenance: false },
-            { id: 'CE08402', name: 'ห้องอ่านหนังสือ', type: 'ห้องเดี่ยว', floor: '4', capacity: 1, maintenance: false },
-            { id: 'CE08403', name: 'ห้องอ่านหนังสือ', type: 'ห้องเดี่ยว', floor: '4', capacity: 1, maintenance: false },
-            { id: 'CE08404', name: 'ห้องอ่านหนังสือ', type: 'ห้องเดี่ยว', floor: '4', capacity: 1, maintenance: false },
-            { id: 'CE08405', name: 'ห้องอ่านหนังสือ', type: 'ห้องเดี่ยว', floor: '4', capacity: 1, maintenance: false },
-            { id: 'CE08406', name: 'ห้องอ่านหนังสือ', type: 'ห้องเดี่ยว', floor: '4', capacity: 1, maintenance: false },
-            { id: 'CE08407', name: 'ห้องอ่านหนังสือ', type: 'ห้องเดี่ยว', floor: '4', capacity: 1, maintenance: false },
-            { id: 'CE08408', name: 'ห้องอ่านหนังสือ', type: 'ห้องเดี่ยว', floor: '4', capacity: 1, maintenance: false },
-            { id: 'CE08409', name: 'ห้องอ่านหนังสือ', type: 'ห้องเดี่ยว', floor: '4', capacity: 1, maintenance: false },
-            { id: 'CE08410', name: 'ห้องอ่านหนังสือ', type: 'ห้องเดี่ยว', floor: '4', capacity: 1, maintenance: false },
-            { id: 'CE08411', name: 'ห้องอ่านหนังสือ', type: 'ห้องเดี่ยว', floor: '4', capacity: 1, maintenance: false },
-            { id: 'CE08412', name: 'ห้องอ่านหนังสือ', type: 'ห้องเดี่ยว', floor: '4', capacity: 1, maintenance: false },
-
-            // ชั้น 4 - ห้องประชุม (ห้องกลุ่ม) 4 ห้อง
-            { id: 'CE08413', name: 'ห้องประชุม', type: 'ห้องกลุ่ม', floor: '4', capacity: 10, maintenance: false },
-            { id: 'CE08414', name: 'ห้องประชุม', type: 'ห้องกลุ่ม', floor: '4', capacity: 10, maintenance: false },
-            { id: 'CE08415', name: 'ห้องประชุม', type: 'ห้องกลุ่ม', floor: '4', capacity: 10, maintenance: false },
-            { id: 'CE08416', name: 'ห้องประชุม', type: 'ห้องกลุ่ม', floor: '4', capacity: 10, maintenance: false },
-
-            // ชั้น 3 - ห้องประชุม (ห้องกลุ่ม) 7 ห้อง
-            { id: 'CE08310', name: 'ห้องประชุม', type: 'ห้องกลุ่ม', floor: '3', capacity: 10, maintenance: false },
-            { id: 'CE08311', name: 'ห้องประชุม', type: 'ห้องกลุ่ม', floor: '3', capacity: 10, maintenance: false },
-            { id: 'CE08312', name: 'ห้องประชุม', type: 'ห้องกลุ่ม', floor: '3', capacity: 10, maintenance: false },
-            { id: 'CE08313', name: 'ห้องประชุม', type: 'ห้องกลุ่ม', floor: '3', capacity: 10, maintenance: false },
-            { id: 'CE08314', name: 'ห้องประชุม', type: 'ห้องกลุ่ม', floor: '3', capacity: 10, maintenance: false },
-            { id: 'CE08315', name: 'ห้องประชุม', type: 'ห้องกลุ่ม', floor: '3', capacity: 10, maintenance: false },
-            { id: 'CE08316', name: 'ห้องประชุม', type: 'ห้องกลุ่ม', floor: '3', capacity: 10, maintenance: false },
-
-            // ชั้น G - ห้องคาราโอเกะ (ห้องกลุ่ม) 1 ห้อง
-            { id: 'CE08317', name: 'ห้องคาราโอเกะ', type: 'ห้องกลุ่ม', floor: 'G', capacity: 5, maintenance: false } 
+            // ชั้น 4
+            { id: 'CE08401', name: 'ห้องอ่านหนังสือ', type: 'ห้องเดี่ยว', floor: '4', capacity: 1 },
+            { id: 'CE08402', name: 'ห้องอ่านหนังสือ', type: 'ห้องเดี่ยว', floor: '4', capacity: 1 },
+            { id: 'CE08403', name: 'ห้องอ่านหนังสือ', type: 'ห้องเดี่ยว', floor: '4', capacity: 1 },
+            { id: 'CE08404', name: 'ห้องอ่านหนังสือ', type: 'ห้องเดี่ยว', floor: '4', capacity: 1 },
+            { id: 'CE08405', name: 'ห้องอ่านหนังสือ', type: 'ห้องเดี่ยว', floor: '4', capacity: 1 },
+            { id: 'CE08406', name: 'ห้องอ่านหนังสือ', type: 'ห้องเดี่ยว', floor: '4', capacity: 1 },
+            { id: 'CE08407', name: 'ห้องอ่านหนังสือ', type: 'ห้องเดี่ยว', floor: '4', capacity: 1 },
+            { id: 'CE08408', name: 'ห้องอ่านหนังสือ', type: 'ห้องเดี่ยว', floor: '4', capacity: 1 },
+            { id: 'CE08409', name: 'ห้องอ่านหนังสือ', type: 'ห้องเดี่ยว', floor: '4', capacity: 1 },
+            { id: 'CE08410', name: 'ห้องอ่านหนังสือ', type: 'ห้องเดี่ยว', floor: '4', capacity: 1 },
+            { id: 'CE08411', name: 'ห้องอ่านหนังสือ', type: 'ห้องเดี่ยว', floor: '4', capacity: 1 },
+            { id: 'CE08412', name: 'ห้องอ่านหนังสือ', type: 'ห้องเดี่ยว', floor: '4', capacity: 1 },
+            { id: 'CE08413', name: 'ห้องประชุม', type: 'ห้องกลุ่ม', floor: '4', capacity: 10 },
+            { id: 'CE08414', name: 'ห้องประชุม', type: 'ห้องกลุ่ม', floor: '4', capacity: 10 },
+            { id: 'CE08415', name: 'ห้องประชุม', type: 'ห้องกลุ่ม', floor: '4', capacity: 10 },
+            { id: 'CE08416', name: 'ห้องประชุม', type: 'ห้องกลุ่ม', floor: '4', capacity: 10 },
+            // ชั้น 3
+            { id: 'CE08310', name: 'ห้องประชุม', type: 'ห้องกลุ่ม', floor: '3', capacity: 10 },
+            { id: 'CE08311', name: 'ห้องประชุม', type: 'ห้องกลุ่ม', floor: '3', capacity: 10 },
+            { id: 'CE08312', name: 'ห้องประชุม', type: 'ห้องกลุ่ม', floor: '3', capacity: 10 },
+            { id: 'CE08313', name: 'ห้องประชุม', type: 'ห้องกลุ่ม', floor: '3', capacity: 10 },
+            { id: 'CE08314', name: 'ห้องประชุม', type: 'ห้องกลุ่ม', floor: '3', capacity: 10 },
+            { id: 'CE08315', name: 'ห้องประชุม', type: 'ห้องกลุ่ม', floor: '3', capacity: 10 },
+            { id: 'CE08316', name: 'ห้องประชุม', type: 'ห้องกลุ่ม', floor: '3', capacity: 10 },
+            // ชั้น G
+            { id: 'CE08317', name: 'ห้องคาราโอเกะ', type: 'ห้องกลุ่ม', floor: 'G', capacity: 5 } 
         ];
 
         function initData() {
             const storedRooms = JSON.parse(localStorage.getItem('libra_rooms') || '[]');
-            // ถ้าระบบยังไม่มีห้อง หรือมีไม่ครบ 24 ห้อง ให้โหลดค่า default ลงไปใหม่
             if (storedRooms.length !== 24) {
                 localStorage.setItem('libra_rooms', JSON.stringify(initialRooms));
             }
@@ -270,7 +265,12 @@
             const currentTime = new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
 
             rooms.forEach(room => {
-                if(room.maintenance) return; 
+                // ดึงข้อมูลสถานะจากที่หน้า Edit เซฟไว้
+                const savedStatus = localStorage.getItem('roomStatus_' + room.id);
+                
+                // ถ้าห้องถูกปิดปรับปรุงหรืองดใช้งาน จะไม่นับเป็นห้องว่าง
+                if(savedStatus === 'ปิดปรับปรุง' || savedStatus === 'งดใช้งาน') return; 
+
                 const isOccupiedNow = todayBookings.some(b => 
                     b.roomId === room.id && 
                     b.status === 'confirmed' && 
@@ -298,7 +298,6 @@
             tbody.innerHTML = '';
 
             bookings.sort((a, b) => b.timestamp - a.timestamp).forEach(b => {
-                
                 let statusBadge = '';
                 let actionBtns = '';
 
@@ -348,7 +347,7 @@
         }
 
         // ==========================================
-        // 4. แท็บ: สถานะห้อง
+        // 4. แท็บ: สถานะห้อง (เช็คจากที่ Edit ไว้ด้วย)
         // ==========================================
         function renderRoomStatus(rooms, bookings) {
             const grid = document.getElementById('rooms-grid');
@@ -360,11 +359,20 @@
             rooms.forEach(room => {
                 const todayBookingsForRoom = bookings.filter(b => b.roomId === room.id && b.date === today && b.status === 'confirmed');
                 
+                // ดึงข้อมูลสถานะจากที่หน้า Edit เซฟไว้
+                const savedStatus = localStorage.getItem('roomStatus_' + room.id);
                 let statusInfo = { text: 'ว่าง', color: 'green', icon: 'bx-check-circle', bg: 'bg-green-100', textCol: 'text-green-800' };
-                
-                if (room.maintenance) {
-                    statusInfo = { text: 'ปิดปรับปรุง', color: 'gray', icon: 'bx-wrench', bg: 'bg-gray-200', textCol: 'text-gray-700' };
+                let customStyle = '';
+
+                // ตรวจสอบสถานะที่แอดมินตั้งไว้
+                if (savedStatus === 'ปิดปรับปรุง') {
+                    statusInfo = { text: 'ปิดปรับปรุง', color: 'orange', icon: 'bx-wrench', bg: 'bg-orange-100', textCol: 'text-orange-800' };
+                    customStyle = 'grayscale opacity-70'; // ทำให้การ์ดดูจางลง
+                } else if (savedStatus === 'งดใช้งาน') {
+                    statusInfo = { text: 'งดใช้งาน', color: 'red', icon: 'bx-block', bg: 'bg-red-100', textCol: 'text-red-800' };
+                    customStyle = 'grayscale opacity-70';
                 } else {
+                    // ถ้าเปิดใช้งานปกติ ค่อยมาเช็คว่ามีคนจองไหม
                     const isOccupiedNow = todayBookingsForRoom.some(b => currentTime >= b.timeIn && currentTime < b.timeOut);
                     if (isOccupiedNow) {
                         statusInfo = { text: 'ไม่ว่าง', color: 'red', icon: 'bx-x-circle', bg: 'bg-red-100', textCol: 'text-red-800' };
@@ -372,7 +380,7 @@
                 }
 
                 grid.innerHTML += `
-                    <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm hover:shadow-lg transition">
+                    <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm hover:shadow-lg transition ${customStyle}">
                         <div class="flex justify-between items-start mb-4">
                             <div>
                                 <h3 class="font-bold text-black text-xl">${room.name}</h3>
@@ -484,12 +492,10 @@
         window.onload = () => {
             initData();
             loadDashboard();
+            // ให้หน้า Dashboard โหลดข้อมูลใหม่เอง ถ้ามีการเปลี่ยนสถานะมาจากแท็บอื่น
             window.addEventListener('storage', loadDashboard);
             setInterval(() => {
-                const rooms = JSON.parse(localStorage.getItem('libra_rooms') || '[]');
-                const bookings = JSON.parse(localStorage.getItem('libra_bookings') || '[]');
-                renderRoomStatus(rooms, bookings);
-                updateSummary(rooms, bookings);
+                loadDashboard();
             }, 60000);
         };
     </script>

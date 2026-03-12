@@ -80,24 +80,34 @@ function initHomePage() {
 
     if (timeInSelect && timeOutSelect) {
         timeOutSelect.disabled = true;
+        
         timeInSelect.addEventListener('change', () => {
             const selectedIndex = timeInSelect.selectedIndex;
+            
+            // ถ้ากลับไปเลือก "กรุณาเลือกเวลาเข้า" ให้รีเซ็ตเวลาออก
             if (selectedIndex === 0) { 
                 timeOutSelect.selectedIndex = 0;
                 timeOutSelect.disabled = true;
                 return;
             }
-            timeOutSelect.disabled = false;
-            let targetIndex = selectedIndex + 2;
+            
+            // ถ้าต้องการให้ระบบล็อกเวลาออกไม่ให้ผู้ใช้แก้ (บังคับ 2 ชม. เป๊ะ) ให้เป็น true
+            // แต่ถ้าอนุญาตให้ผู้ใช้ปรับลดเวลาเองได้ทีหลัง ให้เปลี่ยนเป็น false ครับ
+            timeOutSelect.disabled = true; 
+            
+            // คำนวณเวลาออก (+1 index จะเท่ากับ +2 ชั่วโมงพอดี เพราะตารางเวลาออกเริ่มช้ากว่า 1 ชม.)
+            let targetIndex = selectedIndex + 1;
+            
+            // ป้องกันกรณีผู้ใช้เลือกเวลาเข้าช่วงเย็น แล้วบวก 2 ชม. เกินเวลาปิดห้องสมุด
             if (targetIndex >= timeOutSelect.options.length) {
                 targetIndex = timeOutSelect.options.length - 1;
             }
+            
             timeOutSelect.selectedIndex = targetIndex;
         });
     }
-
     // ==============================================================
-    // 🔥 ระบบอัปเดตป้ายสถานะ ว่าง / ไม่ว่าง บนหน้าแรกแบบ Real-time
+    // 🔥 ระบบอัปเดตป้ายสถานะ ว่าง / ไม่ว่าง บนหน้าแรกแบบ Real-time (แก้ไขบั๊กป้ายซ้อน)
     // ==============================================================
     function updateRoomStatusUI() {
         const roomsData = JSON.parse(localStorage.getItem('libra_rooms') || '[]');
@@ -127,25 +137,28 @@ function initHomePage() {
                 isOccupied = todayBookings.some(b => currentTimeStr >= b.timeIn && currentTimeStr < b.timeOut);
             }
 
-            // หาหัวข้อ h1 เพื่อแทรกป้ายสถานะไปด้านข้าง
+            // หาหัวข้อ h1 
             const titleH1 = card.querySelector('h1.text-xl');
             if(!titleH1) return;
             
-            const titleContainer = titleH1.parentElement;
-            let badge = titleContainer.querySelector('.status-badge');
+            // 🌟 จุดที่แก้ไข: ค้นหาป้ายจากระดับ card แทน และใช้คลาสใหม่เพื่อไม่ให้ตีกับป้ายแอดมิน
+            let badge = card.querySelector('.room-status-indicator');
             
             if (!badge) {
-                // จัดโครงสร้างให้เรียงซ้ายขวา
-                titleContainer.classList.add('flex', 'justify-between', 'items-start', 'pr-5');
+                const originalContainer = titleH1.parentElement;
+                originalContainer.classList.add('flex', 'justify-between', 'items-start', 'pr-5');
+                
+                // สร้างกล่องมาครอบ Text
                 const textWrapper = document.createElement('div');
-                while (titleContainer.childNodes.length > 0) {
-                    textWrapper.appendChild(titleContainer.childNodes[0]);
+                while (originalContainer.childNodes.length > 0) {
+                    textWrapper.appendChild(originalContainer.childNodes[0]);
                 }
-                titleContainer.appendChild(textWrapper);
+                originalContainer.appendChild(textWrapper);
 
+                // สร้างป้ายสถานะใหม่
                 badge = document.createElement('div');
-                badge.className = 'status-badge pt-5'; // จัดระยะห่างด้านบนให้เท่ากับตัวหนังสือ
-                titleContainer.appendChild(badge);
+                badge.className = 'room-status-indicator pt-5'; 
+                originalContainer.appendChild(badge);
             }
             
             // วาดป้ายตามสถานะ
@@ -246,8 +259,8 @@ function initHistoryPage() {
                             <h3 class="font-bold text-lg text-black text-left">ห้อง ${item.roomName} (${item.roomId})</h3>
                             <p class="text-gray-500 text-sm text-left italic">วัตถุประสงค์: ${item.purpose}</p>
                             <div class="flex gap-3 mt-2 font-medium">
-                                <span class="text-xs bg-gray-100 px-2 py-1 rounded text-gray-600">📅 ${item.dateText || item.date}</span>
-                                <span class="text-xs bg-gray-100 px-2 py-1 rounded text-gray-600">⏰ ${item.timeIn} - ${item.timeOut} น.</span>
+                                <span class="text-xs bg-gray-100 px-2 py-1 rounded text-gray-600">${item.dateText || item.date}</span>
+                                <span class="text-xs bg-gray-100 px-2 py-1 rounded text-gray-600">${item.timeIn} - ${item.timeOut} น.</span>
                             </div>
                         </div>
                     </div>
@@ -404,6 +417,20 @@ function autoFill(button) {
         });
     });
 
+    // --- ระบบเช็กประเภทห้องและแสดงช่องกรอกเพื่อน 5 คน ---
+    const groupSection = document.getElementById("group_members_section");
+    let roomType = "";
+    if (roomCard) {
+        // ดึงข้อความประเภทห้อง เช่น "ห้องเดี่ยว" หรือ "ห้องกลุ่ม"
+        roomType = roomCard.querySelector('.m-5 h1').innerText.trim();
+    }
+    
+    if (roomType === "ห้องกลุ่ม") {
+        if (groupSection) groupSection.classList.remove("hidden");
+    } else {
+        if (groupSection) groupSection.classList.add("hidden");
+    }
+
     bookModel.classList.remove("hidden");
     bookModel.classList.add("flex");
     document.body.style.overflow = "hidden"; 
@@ -421,6 +448,15 @@ function closeModel() {
         timeOutSelect.disabled = true;
     }
     if (objectiveInput) objectiveInput.value = "";
+
+    const groupSection = document.getElementById("group_members_section");
+    if (groupSection) {
+        groupSection.classList.add("hidden");
+        for(let i = 1; i <= 5; i++) {
+            const input = document.getElementById(`member_${i}`);
+            if(input) input.value = "";
+        }
+    }
 
     bookModel.classList.replace("flex", "hidden");
     document.body.style.overflow = "auto";
@@ -446,6 +482,33 @@ function confirmBooking(event) {
         return;
     }
 
+    const groupSection = document.getElementById("group_members_section");
+    const groupMembers = []; // เก็บอาร์เรย์ของรหัสนิสิต
+
+    // ถ้าเป็นห้องกลุ่ม (ช่องกรอกไม่ถูกซ่อน)
+    if (groupSection && !groupSection.classList.contains("hidden")) {
+        for(let i = 1; i <= 5; i++) {
+            const input = document.getElementById(`member_${i}`);
+            const studentId = input ? input.value.trim() : "";
+            
+            // 1. เช็กว่ากรอกข้อมูลหรือไม่
+            if(studentId === "") {
+                alert(`กรุณากรอกรหัสนิสิตคนที่ ${i} ให้ครบถ้วนสำหรับการจองห้องกลุ่ม`);
+                return; // หยุดการทำงานถ้ากรอกไม่ครบ
+            }
+
+            // 2. เช็กว่าเป็นตัวเลข 8 หลักพอดีหรือไม่ (/^\d{8}$/ คือ ต้องเป็นตัวเลขตั้งแต่ต้นจนจบ และมี 8 ตัว)
+            if(!/^\d{8}$/.test(studentId)) {
+                alert(`รหัสนิสิตคนที่ ${i} ไม่ถูกต้อง (ต้องเป็นตัวเลข 8 หลักเท่านั้น ยกตัวอย่างเช่น 65000000)`);
+                // โฟกัสไปที่ช่องที่กรอกผิดให้ผู้ใช้แก้ไขได้ทันที
+                if (input) input.focus(); 
+                return;
+            }
+
+            groupMembers.push(studentId); // เก็บข้อมูลไว้
+        }
+    }
+
     const dateElement = document.getElementById('current-date');
     const rawDate = dateElement.dataset.rawDate || new Date().toISOString().split('T')[0];
     const userName = document.getElementById('curren-name').innerText;
@@ -463,7 +526,8 @@ function confirmBooking(event) {
         timeIn: timeInText,
         timeOut: timeOutText,
         status: "pending", // รอตรวจสอบ
-        timestamp: Date.now()
+        timestamp: Date.now(),
+        members: groupMembers // เพิ่มข้อมูลเพื่อนร่วมกลุ่มลงไป
     };
 
     let bookings = JSON.parse(localStorage.getItem('libra_bookings')) || [];

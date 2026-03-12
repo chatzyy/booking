@@ -15,7 +15,7 @@
 </head>
 <body>
 <!-- Menu -->
-    <div class="bg-gray-50 fixed w-full">
+    <div class="bg-gray-50 fixed w-full z-40">
         <div class="flex shadow p-2 justify-between h-20">
             <div class="flex gap-1">
                 <h1 class="flex justify-center items-center ml-7">
@@ -917,6 +917,48 @@
         <h1 class="text-2xl text-gray-500 font-bold">ไม่พบห้องที่ค้นหา</h1>
         <p class="text-gray-400">กรุณาเลือกเงื่อนไขการค้นหาใหม่อีกครั้ง</p>
     </div>
+
+    <script>
+document.addEventListener('DOMContentLoaded', () => {
+    // ดึงปุ่มจองทุกปุ่มในหน้า Home
+    const bookButtons = document.querySelectorAll('button[data-room]');
+
+    bookButtons.forEach(button => {
+        const roomId = button.getAttribute('data-room');
+        // ดึงสถานะที่เซฟไว้จากหน้า Edit
+        const savedStatus = localStorage.getItem('roomStatus_' + roomId);
+        const card = button.closest('.w-80');
+        const img = card.querySelector('img');
+
+        // ถ้ามีการเซฟสถานะไว้ และไม่ใช่ 'เปิดใช้งานปกติ'
+        if (savedStatus && savedStatus !== 'เปิดใช้งานปกติ') {
+            
+            // 1. ทำภาพให้เป็นสีเทา
+            img.classList.add('grayscale', 'opacity-50');
+            card.classList.add('relative');
+
+            // 2. แปะป้ายสถานะที่มุมขวาบนเหมือนหน้า Edit
+            const badge = document.createElement('div');
+            if (savedStatus === 'ปิดปรับปรุง') {
+                badge.className = 'status-badge absolute top-4 right-4 bg-orange-500 text-white px-3 py-1 rounded-xl text-sm font-bold shadow-lg flex items-center';
+                badge.innerHTML = '<i class="bx bx-wrench mr-1"></i> ปิดปรับปรุง';
+            } else if (savedStatus === 'งดใช้งาน') {
+                badge.className = 'status-badge absolute top-4 right-4 bg-red-600 text-white px-3 py-1 rounded-xl text-sm font-bold shadow-lg flex items-center';
+                badge.innerHTML = '<i class="bx bx-block mr-1"></i> งดใช้งาน';
+            }
+            card.insertBefore(badge, card.firstChild);
+
+            // 3. ปิดการใช้งานปุ่ม "จองห้องนี้"
+            button.disabled = true;
+            button.onclick = null; // ยกเลิกฟังก์ชัน autoFill
+            button.classList.remove('bg-black', 'text-white'); // เอาสีดำออก
+            button.classList.add('bg-gray-300', 'text-gray-500', 'cursor-not-allowed'); // เปลี่ยนเป็นปุ่มสีเทากดไม่ได้
+            button.innerText = savedStatus; // เปลี่ยนข้อความเป็น "ปิดปรับปรุง" หรือ "งดใช้งาน"
+        }
+    });
+});
+</script>
+
     
 <script src="/javascript/javascript.js"></script>
 </body>
