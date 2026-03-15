@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>home_page</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Basic Icons -->
     <link href="https://cdn.boxicons.com/3.0.8/fonts/basic/boxicons.min.css" rel="stylesheet">
      <style>
         @import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;700&display=swap');
@@ -14,8 +13,7 @@
 
 </head>
 <body>
-<!-- Menu -->
-    <div class="bg-gray-50 fixed w-full z-40">
+<div class="bg-gray-50 fixed w-full z-40">
         <div class="flex shadow p-2 justify-between h-20">
             <div class="flex gap-1">
                 <h1 class="flex justify-center items-center ml-7">
@@ -46,8 +44,7 @@
         </div>
     </div>
 
-<!-- contant -->
-    <div class=" pt-40 pl-12">
+<div class=" pt-40 pl-12">
         <h1 id="modal_room_title" class=" text-3xl font-bold">
             ห้องทั้งหมด
         </h1>
@@ -72,8 +69,7 @@
         </select>
     </div>
 
-<!-- room -->
-    <div id="all_room"  class="grid grid-cols-4 pr-12">
+<div id="all_room"  class="grid grid-cols-4 pr-12">
         <div class="w-80 m-12 rounded-b-2xl rounded-2xl shadow-xl hover:shadow-2xl ">
             <img src="/img/IMG_1007.jpg" alt="" class=" rounded-t-2xl">
             <div>
@@ -830,9 +826,8 @@
     
     </div>
 
-<!-- Form -->
-    <div id="book_model" class="justify-center items-center fixed inset-0 z-50 hidden bg-black/50">
-        <div id="book_model" class=" w-96 bg-white rounded-xl">
+<div id="book_model" class="justify-center items-center fixed inset-0 z-50 hidden bg-black/50 py-10">
+        <div id="modal_content" class=" w-96 bg-white rounded-xl max-h-[90vh] overflow-y-auto">
             <form action="" class="">
                 <div>
                     <h1 class="mt-5 ml-5 text-2xl font-bold">
@@ -913,6 +908,20 @@
                             </select>     
                         </div>    
                     </div>
+
+                    <div id="group_members_section" class="hidden mt-4">
+                        <h1 class="ml-5 text-red-500 font-medium text-sm">
+                            * สำหรับห้องกลุ่ม กรุณากรอกรหัสนิสิตผู้ร่วมใช้งาน 5 คน
+                        </h1>
+                        <div class="flex flex-col gap-2 ml-5 mr-8 mt-2">
+                            <input type="text" id="member1" class="border rounded-xl pl-3 py-1 bg-gray-50" placeholder="รหัสนิสิตคนที่ 1">
+                            <input type="text" id="member2" class="border rounded-xl pl-3 py-1 bg-gray-50" placeholder="รหัสนิสิตคนที่ 2">
+                            <input type="text" id="member3" class="border rounded-xl pl-3 py-1 bg-gray-50" placeholder="รหัสนิสิตคนที่ 3">
+                            <input type="text" id="member4" class="border rounded-xl pl-3 py-1 bg-gray-50" placeholder="รหัสนิสิตคนที่ 4">
+                            <input type="text" id="member5" class="border rounded-xl pl-3 py-1 bg-gray-50" placeholder="รหัสนิสิตคนที่ 5">
+                        </div>
+                    </div>
+
                 <div>
                     <h1 class="mt-5 ml-5" >
                         วัตถุประสงค์ (ไม่บังคับ)
